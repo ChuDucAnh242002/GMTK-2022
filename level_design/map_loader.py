@@ -55,5 +55,4 @@ def load_entity(level, json_map):
         entities.append([[x, y], id])
     return entities
     
-
 load_map("data/map/")
