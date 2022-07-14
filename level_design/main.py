@@ -20,6 +20,20 @@ FPS = 60
 
 font = Font("data/font/small_font.png", WHITE)
 
+
+
+# {'foreground': {ID: <Surface> * n}            ID of foreground and tiles
+#       'tiles' : {ID: <Surface> * n}
+
+#           level                                       
+game_map = {0: 
+            {'tile': {}, # {'0;0': [[[pos_x, pos_y], ID] * n]}
+            'foreground': {}, # {'0;0': [[[pos_x, pos_y], ID] * n]}
+            'object': [], # [[[pos_x, pos_y], ID] * n]
+            'entity': [] # [[[pos_x, pos_y], ID] * n]
+                        }
+            }
+
 def quit():
     pygame.quit()
     sys.exit()
@@ -29,9 +43,8 @@ def draw():
     DIS.fill(BLACK)
     
 def main():
-    
-    spritesheet_data = load_spritesheets("data/images/tileset", (8, 8))
-    # print(spritesheet_data)
+    img_size = (8, 8)
+    spritesheet_data = load_spritesheets("data/images/tileset", img_size)
     run = True
     while run: 
         CLOCK.tick(FPS)
