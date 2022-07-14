@@ -13,12 +13,18 @@ class animation():
         self.ID = ID
         self.status = status
         self.pos = pos
+        self.x = pos[0]
+        self.y = pos[1]
         self.offset = [0, 0]
         self.rect = self.get_rect()
         self.flip = False
 
-    def render(self, surface, scroll, draw = True):
+    def render(self, surface, camera, draw = True) -> None:
 
+        self.x = self.pos[0]
+        self.y = self.pos[1]
+
+        scroll = camera.scroll
         pos = [self.pos[0] - scroll[0] + self.offset[0], self.pos[1] - scroll[1] + self.offset[1]]
         obj_list = os.listdir(self.obj_path)
         animation_list = os.listdir(self.animation_path)
@@ -52,7 +58,7 @@ class animation():
 
         self.frame += 1
 
-    def one_time(self, status, offset=[0, 0]):
+    def one_time(self, status, offset=[0, 0]) -> None:
         self.offset = offset
         obj_list = os.listdir(self.obj_path)
         if self.ID in obj_list:
@@ -67,16 +73,16 @@ class animation():
         if self.frame == len(db.animation_database[ID]) - 1:
             self.frame = 0
 
-    def change_status(self, entity_new_status, flip = False):
+    def change_status(self, entity_new_status, flip = False) -> None:
         self.flip = flip
         if self.status != entity_new_status:
             self.status = entity_new_status
             self.frame = 0
 
-    def change_offset(self, offset):
+    def change_offset(self, offset) -> None:
         self.offset = offset
 
-    def get_rect(self):
+    def get_rect(self) -> pygame.Rect:
 
         obj_list = os.listdir(self.obj_path)
         if self.ID + '.png' in obj_list:

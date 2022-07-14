@@ -2,7 +2,7 @@ import pygame
 import os
 import math
 from pygame.locals import *
-from engine.database import database as db
+import engine.database as db
 from engine.object import object
 
 class entity(object):
@@ -13,7 +13,7 @@ class entity(object):
         self.life = 1
         self.hitbox = self.rect
 
-    def visible_area(self, width, height, double_height=False):
+    def visible_area(self, width, height, double_height=False) -> pygame.Rect:
         vis_x = self.x - width * self.rect.width
         vis_y = self.y - self.rect.height * height
         vis_width = width * self.rect.width * 2 + self.rect.width
@@ -24,7 +24,7 @@ class entity(object):
         area_rect = pygame.Rect([vis_x, vis_y, vis_width, vis_height])
         return area_rect
 
-    def one_time(self, status, offset=[0, 0]):
+    def one_time(self, status, offset=[0, 0]) -> bool:
         ID = self.ID + '_' + status
         self.offset = offset
         self.change_action(status)
@@ -34,7 +34,7 @@ class entity(object):
             self.frame = 0
             return True
 
-    def attack_rect(self, area, offset):
+    def attack_rect(self, area, offset) -> pygame.Rect:
         self.area = area
         self.attack = True
         if self.flip:
@@ -50,7 +50,7 @@ class entity(object):
             else:
                 self.attack = False
 
-    def check_fall(self):
+    def check_fall(self) -> bool:
         fall = True
         if not self.flip:
             check_x = self.rect.x + self.rect.width
@@ -63,5 +63,6 @@ class entity(object):
         for tile_check in db.tile_rects:
             if check_rect.colliderect(tile_check):
                 fall = False
+                return False
         if fall:
             return True

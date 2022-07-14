@@ -62,10 +62,11 @@ class map():
                         db.tile_rects.append(object(data[2], data[0]).get_rect())
                     else:
                         db.objects.append(object(data[2], data[0]))
+        return self.player
 
-    def render(self, surface, scroll, display_rect):
+    def render(self, surface, camera):
+        scroll = camera.scroll
 
-        self.update(display_rect)
         for chunk in self.game_map['tile']:
             for data in self.game_map['tile'][chunk]:
                 LOC_CHUNK = str(data[0][0]) + ';' + str(data[0][1])
@@ -76,9 +77,7 @@ class map():
                 data_width = db.img_database[ID_im][0].get_width()
                 data_height = db.img_database[ID_im][0].get_height()
                 block_rect = pygame.Rect(pos_x, pos_y, data_width, data_height)
-                if block_rect.colliderect(display_rect):
+                if block_rect.colliderect(camera.rect):
                     surface.blit(img, [pos_x - scroll[0], pos_y - scroll[1]])
                     # pygame.draw.rect(surface, [255, 0, 0],
-                    #                  [pos_x - scroll[0], pos_y - scroll[1], data_width, data_height])
-
-        return self.player
+                    #                  [pos_x - scroll[0], pos_y - scroll[1], data_width, data_height], 1)

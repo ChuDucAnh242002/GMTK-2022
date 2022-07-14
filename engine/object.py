@@ -2,14 +2,12 @@ import pygame
 import os
 import math
 from pygame.locals import *
-from engine.database import database as db
+import engine.database as db
 from engine.animation import animation
 
 class object(animation):
     def __init__(self, ID, pos, status = "idle"):
         super().__init__(ID, pos, status)
-        self.x = self.pos[0]
-        self.y = self.pos[1]
         self.attack = 0
         self.collision = {'top': False, 'bottom': False, 'right': False, 'left': False}
         self.time = 0
@@ -21,7 +19,7 @@ class object(animation):
         self.y_momentum = 0
         self.check = 0
 
-    def DDDH(self, w, A, width, height, offset=[0, 0]):
+    def DDDH(self, w, A, width, height, offset=[0, 0]) -> None:
         self.w_x = w[0]
         self.w_y = w[1]
         a_x = A[0]
@@ -33,14 +31,14 @@ class object(animation):
         hit_box = pygame.Rect([self.x + offset_x + offset[0], self.y + offset_y + offset[1], width, height])
         self.time += 1
 
-    def collide_test(self):
+    def collide_test(self) -> list:
         hit_list = []
         for tile in db.tile_rects:
             if self.rect.colliderect(tile):
                 hit_list.append(tile)
         return hit_list
 
-    def move(self, movement):
+    def move(self, movement) -> None:
         self.collision = {'top': False, 'bottom': False, 'right': False, 'left': False}
         self.rect = self.get_rect()
 
@@ -68,7 +66,9 @@ class object(animation):
                 self.rect.top = tile.bottom
         self.y = self.rect.y
 
-    def attack_area(self, area, offset = [0, 0]):
+        self.pos = [self.x, self.y]
+
+    def attack_area(self, area, offset = [0, 0]) -> pygame.Rect:
         attack_x = self.x + offset[0] - area[0]
         attack_y = self.y + offset[1] - area[1]
         attack_width = area[0] * 2 + self.get_rect().width
@@ -77,7 +77,7 @@ class object(animation):
         attack_area = pygame.Rect(attack_x, attack_y, attack_width, attack_height)
         return attack_area
 
-    def change_action(self, status, offset=[0, 0]):
+    def change_action(self, status, offset=[0, 0]) -> None:
         self.offset = offset
         if self.status != status:
             self.status = status

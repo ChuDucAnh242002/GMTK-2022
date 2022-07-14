@@ -6,7 +6,7 @@ img_FPS = 12
 
 img_database = {}
 
-# { 'ID': [loc _img *60], ..... } . ID is filename + status. ec=x: ID: coin_idle
+# { 'ID': [loc _img *60], ..... } . ID is filename  + status. ec=x: ID: coin_idle
 animation_database = {}
 
 # { 'ID': loc _img, ..... } . ID is filename + status. ec=x: ID: coin_idle
