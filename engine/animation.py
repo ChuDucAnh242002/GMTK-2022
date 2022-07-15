@@ -17,6 +17,8 @@ class animation():
         self.y = pos[1]
         self.offset = [0, 0]
         self.rect = self.get_rect()
+        self.width = self.rect.width
+        self.height = self.rect.height
         self.flip = False
 
     def render(self, surface, camera, draw = True) -> None:
@@ -47,12 +49,14 @@ class animation():
             frame_path = db.animation_database[str(ID)][self.frame]
             frame_img = pygame.image.load(frame_path).convert()
             frame_img.set_colorkey([0, 0, 0])
+            self.rect = pygame.Rect(self.pos[0], self.pos[1], frame_img.get_width(), frame_img.get_height())
             if draw:
                 surface.blit(pygame.transform.flip(frame_img, self.flip, False), pos)
         elif self.ID + '.png' in obj_list:
             self.frame = 0
             ID = self.ID
             obj_img = pygame.image.load(self.obj_path + '/' + ID + '.png')
+            self.rect = pygame.Rect(self.pos[0], self.pos[1], obj_img.get_width(), obj_img.get_height())
             if draw:
                 surface.blit(obj_img, pos)
 

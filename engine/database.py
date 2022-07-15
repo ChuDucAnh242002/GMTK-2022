@@ -7,6 +7,7 @@ img_FPS = 12
 delta_time = 0
 multiply_factor = 0
 
+# { 'ID': [surface_img, name, type] } . Ex:  '1' : [surface, 'stone', 'object']
 img_database = {}
 
 # { 'ID': [loc _img *60], ..... } . ID is filename  + status. ec=x: ID: coin_idle
@@ -15,7 +16,13 @@ animation_database = {}
 # { 'ID': loc _img, ..... } . ID is filename + status. ec=x: ID: coin_idle
 obj_database = {}
 
+# Only collide with camera
 tile_rects = []
+tile_ID = []
+object_camera = []
+entity_camera = []
+
+# All entities, obj in the game
 entities = []
 objects = []
 

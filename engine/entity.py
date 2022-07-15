@@ -1,3 +1,4 @@
+from turtle import update
 import pygame
 import os
 import math
@@ -6,13 +7,13 @@ import engine.database as db
 from engine.object import object
 
 class entity(object):
-    def __init__(self, ID, pos, status = 'idle'):
-        super().__init__(ID, pos, status)
+    def __init__(self, ID, pos, status = 'idle', tag = ['entity']):
+        super().__init__(ID, pos, status, tag)
         self.attack_timer = 0
         self.health = 100
         self.life = 1
         self.hitbox = self.rect
-
+        
     def visible_area(self, width, height, double_height=False) -> pygame.Rect:
         vis_x = self.x - width * self.rect.width
         vis_y = self.y - self.rect.height * height

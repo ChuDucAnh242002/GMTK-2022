@@ -17,13 +17,26 @@ class map():
         self.player = None
 
     def load_map(self, name):
+
+        # Only collide with camera
+        db.tile_rects = []
+        db.tile_ID = []
+        db.object_camera = []
+        db.entity_camera = []
+
+        # All entities, obj in the game
+        db.entities = []
+        db.objects = []
+
         f = open('data/map/' + name + '.json', 'r')
         self.game_map = json.load(f)
         return self.game_map
 
-    def update(self, display_rect):
+    def update(self, camera):
 
         db.tile_rects = []  # Must clear else lag :<
+        db.tile_ID = []
+
         for type in self.game_map:
 
             if type == 'tile':
@@ -36,48 +49,41 @@ class map():
                         data_width = db.img_database[ID_im][0].get_width()
                         data_height = db.img_database[ID_im][0].get_height()
                         block_rect = pygame.Rect(pos_x, pos_y, data_width, data_height)
-                        if block_rect.colliderect(display_rect):
+                        if block_rect.colliderect(camera.rect):
                             if ID_im not in [1, 2, 3, 23, 37, 50, 55, 56, 57, 58]:
                                 db.tile_rects.append(block_rect)
+                                db.tile_ID.append(ID_im)
 
             elif type == 'entity' and db.entities == []:
                 for data in self.game_map[type]:
                     temp_entity = entity(data[2], data[0])
                     if data[1] == 90:
-                        self.player = temp_entity
-                    elif temp_entity.rect.colliderect(display_rect):
+                        if self.player == None:
+                            self.player = temp_entity
+                    else:
                         db.entities.append(temp_entity)
 
             elif type == 'object' and db.objects == []:
                 for data in self.game_map[type]:
+                    temp_object = object(data[2], data[0])
                     if data[1] == 79:
-                        db.objects.append(object(data[2], data[0], 'closed'))
-                        strange_door_rect = db.objects[-1].get_rect()
+                        temp_object.change_status('closed')
+                        strange_door_rect = temp_object.rect
                         strange_door_ex = True
-                    elif data[1] == 62:
-                        db.objects.append(object(data[2], data[0]))
-                    elif data[1] == 64:
-                        db.objects.append(object(data[2], data[0]))  # ID, pos
                     elif data[1] == 78:
-                        db.tile_rects.append(object(data[2], data[0]).get_rect())
-                    else:
-                        db.objects.append(object(data[2], data[0]))
+                        temp_object.change_tag(['tile', 'movable'])
+                    
+                    db.objects.append(temp_object)
+
         return self.player
 
     def render(self, surface, camera):
         scroll = camera.scroll
 
-        for chunk in self.game_map['tile']:
-            for data in self.game_map['tile'][chunk]:
-                LOC_CHUNK = str(data[0][0]) + ';' + str(data[0][1])
-                pos_x = data[0][0]
-                pos_y = data[0][1]
-                ID_im = data[1]
-                img = db.img_database[ID_im][0]
-                data_width = db.img_database[ID_im][0].get_width()
-                data_height = db.img_database[ID_im][0].get_height()
-                block_rect = pygame.Rect(pos_x, pos_y, data_width, data_height)
-                if block_rect.colliderect(camera.rect):
-                    surface.blit(img, [pos_x - scroll[0], pos_y - scroll[1]])
-                    # pygame.draw.rect(surface, [255, 0, 0],
-                    #                  [pos_x - scroll[0], pos_y - scroll[1], data_width, data_height], 1)
+        for i in range(len(db.tile_ID)):
+            img = db.img_database[db.tile_ID[i]][0]
+            block_rect = db.tile_rects[i]
+            surface.blit(img, [block_rect.x - scroll[0], block_rect.y - scroll[1]])
+
+            # pygame.draw.rect(surface, [255, 0, 0],
+            #                  [block_rect.x - scroll[0], block_rect.y - scroll[1], block_rect.width, block_rect.height], 1)
