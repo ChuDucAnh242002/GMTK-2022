@@ -70,12 +70,13 @@ How to use ?
                 'right': False, 
                 'left': False}
             
-            self.near_by    : dictionary 
-                {'left': [],  store list of entity, object ID and 'tile' near by
-                'right': [], 
-                'up': [], 
-                'down': [], 
-                'surround': []}
+            only object have tag 'entity' and 'movable' have this atribute updating
+                self.near_by    : dictionary 
+                    {'left': [],  store list of entity, object ID and 'tile' near by
+                    'right': [], 
+                    'up': [], 
+                    'down': [], 
+                    'surround': []}
     
             self.ID     : string
             self.status : string
