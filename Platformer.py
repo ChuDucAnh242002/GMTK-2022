@@ -24,7 +24,7 @@ while True:
     pygame.display.set_caption("FPS: " + str(clock.get_fps()))
 
     e.render(DEBUG)
-  
+
     for obj in db.object_camera:
         if obj.ID == 'stone' and 'stone' in e.player.near_by['surround']:
             if 'stone' in e.player.near_by['right']:

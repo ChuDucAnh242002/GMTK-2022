@@ -106,8 +106,7 @@ class object(animation):
 
     def move(self, movement) -> None:
 
-        movement = [movement[0] * db.multiply_factor, movement[1] * db.multiply_factor]
-
+        movement = [round(movement[0] * db.multiply_factor), round(movement[1] * db.multiply_factor)]
         self.collision = {'top': False, 'bottom': False, 'right': False, 'left': False}
 
         # Update location x ---------------------------------------------------------------------------------------------------- #
