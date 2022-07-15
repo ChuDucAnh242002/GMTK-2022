@@ -102,6 +102,7 @@ How to use ?
                     'right'
                     'up'
                     'down'
+                    'surround'
 
             move(movement)              -> None
                 movement: list
