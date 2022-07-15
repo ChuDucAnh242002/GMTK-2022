@@ -13,9 +13,10 @@ class Engine():
         self.map = map()
         self.map.load_map('level_1')
         self.player = None
-        self.camera = camera(WINDOWN_SIZE, SCALE)
+
         self.screen = pygame.display.set_mode(WINDOWN_SIZE)
         self.display = pygame.Surface([WINDOWN_SIZE[0] / SCALE, WINDOWN_SIZE[1] / SCALE])
+        self.camera = camera(WINDOWN_SIZE, SCALE)
 
     def update(self):
         self.player = self.map.update(self.camera.rect)
