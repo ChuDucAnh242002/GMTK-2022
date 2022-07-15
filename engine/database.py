@@ -1,8 +1,11 @@
+from numpy import multiply
 import pygame
 import os
 
 FPS = 60
 img_FPS = 12
+delta_time = 0
+multiply_factor = 0
 
 img_database = {}
 
@@ -17,13 +20,16 @@ entities = []
 objects = []
 
 class database():
-
-    global FPS, img_FPS
     global img_database, animation_database, obj_database
     global tile_rects, entities, objects
 
-    def __init__(self, FPS):
+    def __init__(self, input_FPS, input_img_FPS):
+        global FPS, img_FPS
+
         # { ID: [img_loaded, img_name, type] } type can be obj, tile, entity
+        img_FPS = input_img_FPS
+        FPS = input_FPS//img_FPS * img_FPS
+        
         self.create_img_database()
 
         self.animation_path = 'data/animation'

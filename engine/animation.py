@@ -8,7 +8,7 @@ class animation():
         self.entity_path = "data/animation/entity"
         self.obj_path = "data/object"
         self.FPS = db.FPS
-        self.img_FPS = 12
+        self.img_FPS = db.img_FPS
         self.frame = 0
         self.ID = ID
         self.status = status
@@ -56,7 +56,7 @@ class animation():
             if draw:
                 surface.blit(obj_img, pos)
 
-        self.frame += 1
+        self.frame += round(1 * db.multiply_factor)
 
     def one_time(self, status, offset=[0, 0]) -> None:
         self.offset = offset

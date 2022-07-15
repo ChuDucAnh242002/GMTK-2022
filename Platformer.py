@@ -9,15 +9,16 @@ pygame.init()
 pygame.mixer.set_num_channels(64)
 clock = pygame.time.Clock()
 
-pygame.display.set_caption("Adventure Time !!! Made by DAIOTAKU")
-
 WINDOWN_SIZE = (960, 540)
 SCALE = 3
 FPS = 60
+img_FPS = 12
 
-e = Engine(WINDOWN_SIZE, SCALE, FPS)
+e = Engine(WINDOWN_SIZE, SCALE, FPS, img_FPS)
 
 while True:
+
+    pygame.display.set_caption("FPS: " + str(clock.get_fps()))
 
     e.render()
 
@@ -32,6 +33,6 @@ while True:
     elif key_pressed[K_RIGHT]:
         e.player.move([2, 0])
 
-    clock.tick(60)
+    clock.tick(e.FPS)
 
     pygame.display.update()

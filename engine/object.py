@@ -39,6 +39,9 @@ class object(animation):
         return hit_list
 
     def move(self, movement) -> None:
+
+        movement = [movement[0] * db.multiply_factor, movement[1] * db.multiply_factor]
+
         self.collision = {'top': False, 'bottom': False, 'right': False, 'left': False}
         self.rect = self.get_rect()
 
