@@ -106,7 +106,7 @@ How to use ?
 
             move(movement)              -> None
                 movement: list
-                [x, y]
+                [speed_x, speed_y]
             
             change_action(status, offset = [0, 0] -> None
                 status  : string
