@@ -2,7 +2,7 @@ import pygame, os, sys
 
 from core_funcs import *
 
-TOTAL_LEVEL = 0
+# TOTAL_LEVEL = 0
 game_map = {'tile': {}, 
             'object': [],
             'entity': []
@@ -16,20 +16,21 @@ ALL_LAYER.extend(ENTITY_LAYER)
 IMG_SIZE = 8
 CHUNK_SIZE = 8
 
-def load_map(domain):
+def load_new_map(domain, total_level):
     game_map = {}
-    json_map = load_dict_json(domain, TOTAL_LEVEL, ALL_LAYER)
-    for level in range(TOTAL_LEVEL +1):
+    json_map = load_dict_json(domain, total_level, ALL_LAYER)
+    for level in range(total_level +1):
         game_map[level] = {'tile': {}, 
             'foreground': [],
             'object': [],
             'entity': []
             }
-        entities = load_entity(level, json_map)
         tiles, foreground = load_tile(level, json_map)
-        game_map[level]["entity"] = entities
+        entities, objects = load_entity(level, json_map)
         game_map[level]["tile"] = tiles
         game_map[level]["foreground"] = foreground
+        game_map[level]["entity"] = entities
+        game_map[level]["object"] = objects
 
     return game_map
 
@@ -59,12 +60,22 @@ def load_tile(level, json_map):
 
 def load_entity(level, json_map):
     entities = []
-    for entity in json_map[level]["entity_layer_0"]:
-        x = entity['x'] - entity['originX']
-        y = entity['y'] - entity['originY']
-        id = entity['name']
-        entities.append([[x, y], id])
-    return entities
+    objects = []
+    if "entity_layer_0" in ENTITY_LAYER:
+        for entity in json_map[level]["entity_layer_0"]:
+            x = entity['x'] - entity['originX']
+            y = entity['y'] - entity['originY']
+            name = entity['name']
+            # id = entity['id']
+            entities.append([[x, y], name])
+    if "entity_layer_1" in ENTITY_LAYER:
+        for entity in json_map[level]["entity_layer_1"]:
+            x = entity['x'] - entity['originX']
+            y = entity['y'] - entity['originY']
+            name = entity['name']
+            # id = entity['id']
+            objects.append([[x, y], name])
+    return entities, objects
     
 # game_map = load_map("data/map/")
 # print(game_map)

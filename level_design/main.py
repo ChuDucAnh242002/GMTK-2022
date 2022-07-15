@@ -4,6 +4,7 @@ from pygame.locals import *
 from core_funcs import *
 from text import Font
 from ss_loader import *
+from map_loader import *
 
 pygame.init()
 pygame.font.init()
@@ -18,8 +19,13 @@ DIS = pygame.Surface((WIDTH //SCALE, HEIGHT //SCALE))
 CLOCK = pygame.time.Clock()
 FPS = 60
 
+img_size = (8, 8)
 font = Font("data/font/small_font.png", WHITE)
-
+# Contain ID of foreground and tiles
+spritesheet_data = load_spritesheets("data/images/tileset", img_size)
+# print(spritesheet_data)
+game_map = load_new_map("data/map/", 0)
+# print(game_map)
 
 
 # {'foreground': {ID: <Surface> * n}            ID of foreground and tiles
@@ -41,10 +47,13 @@ def quit():
 def draw():
     WIN.fill(BLACK)
     DIS.fill(BLACK)
+    # Example rendering font
+    font.render_english("Hello World\nHi world", DIS, (0, 0))
     
 def main():
-    img_size = (8, 8)
-    spritesheet_data = load_spritesheets("data/images/tileset", img_size)
+    
+
+    
     run = True
     while run: 
         CLOCK.tick(FPS)
