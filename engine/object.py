@@ -153,3 +153,6 @@ class object(animation):
 
     def change_tag(self, tag):
         self.tag = tag
+
+    def add_tag(self, tag):
+        self.tag.append(tag)
