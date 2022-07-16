@@ -3,8 +3,10 @@ import pygame
 import os
 import engine.database as db
 
+from engine.core_funcs import *
+
 class animation():
-    def __init__(self, ID, pos, status):
+    def __init__(self, ID, pos, status, tag):
         self.animation_path = 'data/animation'
         self.entity_path = "data/animation/entity"
         self.obj_path = "data/object"
@@ -24,6 +26,7 @@ class animation():
         self.width = self.rect.width
         self.height = self.rect.height
         self.flip = False
+        self.tag = tag
 
     def render(self, surface, camera, draw = True) -> None:
 
@@ -33,9 +36,13 @@ class animation():
         scroll = camera.scroll
         pos = [self.pos[0] - scroll[0] + self.offset[0], self.pos[1] - scroll[1] + self.offset[1]]
 
-        if (db.DEBUG):
+        if 'no_img' in db.DEBUG:
             self.rect = pygame.Rect(self.pos[0], self.pos[1], self.rect.width, self.rect.height)
-            pygame.draw.rect(surface, [255, 0, 0], [pos[0], pos[1], self.rect.width, self.rect.height])
+            if 'player' in self.tag:
+                COLOR = RED  
+            else:
+                COLOR = WHITE
+            pygame.draw.rect(surface, COLOR, [pos[0], pos[1], self.rect.width, self.rect.height])
         else:
             obj_list = os.listdir(self.obj_path)
             animation_list = os.listdir(self.animation_path)

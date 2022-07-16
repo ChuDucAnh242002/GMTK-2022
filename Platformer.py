@@ -20,7 +20,7 @@ total_level = 1
 
 e = Engine(WINDOWN_SIZE, SCALE, FPS, img_FPS, total_level)
 e.load_map(0)
-e.DEBUG = True
+e.DEBUG = ['show_hitbox', 'hide_tile', 'no_img']
 
 while True:
 

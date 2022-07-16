@@ -5,7 +5,7 @@ from engine.core_funcs import *
 FPS = 60
 IMG_SIZE = 8
 CHUNK_SIZE = 8
-DEBUG = False
+DEBUG = []
 
 img_FPS = 12
 delta_time = 0

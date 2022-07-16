@@ -7,7 +7,7 @@ from engine.animation import animation
 
 class object(animation):
     def __init__(self, ID, pos, status = "idle", tag = ['object']):
-        super().__init__(ID, pos, status)
+        super().__init__(ID, pos, status, tag)
         self.attack = 0
         self.collision = {'top': False, 'bottom': False, 'right': False, 'left': False}
         self.near_by = {'left': [], 'right': [], 'up': [], 'down': [], 'surround': []}
@@ -19,7 +19,6 @@ class object(animation):
         self.movement = [0, 0]
         self.y_momentum = 0
         self.check = 0
-        self.tag = tag
 
     def render(self, surface, camera, draw=True) -> None:
         super().render(surface, camera, draw)

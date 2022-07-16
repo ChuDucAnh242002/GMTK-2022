@@ -117,6 +117,7 @@ class map():
                     if data[1] == 'Player':
                         if self.player == None:
                             self.player = temp_entity
+                            self.player.add_tag('player')
                     else:
                         db.entities.append(temp_entity)
 
@@ -140,7 +141,9 @@ class map():
         for i in range(len(db.tile_ID)):
             img = db.tiles_and_fore_database['tile'][db.tile_ID[i]]
             block_rect = db.tile_rects[i]
-            surface.blit(img, [block_rect.x - scroll[0], block_rect.y - scroll[1]])
+            
+            if 'hide_tile' not in db.DEBUG:
+               surface.blit(img, [block_rect.x - scroll[0], block_rect.y - scroll[1]])
 
             # pygame.draw.rect(surface, [255, 0, 0],
             #                  [block_rect.x - scroll[0], block_rect.y - scroll[1], block_rect.width, block_rect.height], 1)

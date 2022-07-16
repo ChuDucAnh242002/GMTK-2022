@@ -3,7 +3,7 @@ import time
 import engine.database as db
 from engine.map import map
 from engine.camera import camera
-
+from engine.core_funcs import *
 class Engine():
     def __init__(self, WINDOWN_SIZE, SCALE, FPS, img_FPS, total_level):
         self.WINDOWN_SIZE = WINDOWN_SIZE
@@ -23,7 +23,7 @@ class Engine():
         self.now_time = 0
         self.delta_time = 0
         self.multiply_factor = 0
-        self.DEBUG = False
+        self.DEBUG = []
 
     def load_map(self, level):
         self.map.load_map(level)
@@ -43,22 +43,14 @@ class Engine():
         self.object_render(self.display, self.camera)
         self.player.render(self.display, self.camera)
 
-        if (self.DEBUG):
-
-            for entity in db.entity_camera:
-                pygame.draw.rect(self.display, [0, 0, 255], [entity.x - self.camera.scroll[0], entity.y - self.camera.scroll[1], entity.width, entity.height], 1)
-
-            for obj in db.object_camera:
-                pygame.draw.rect(self.display, [255, 255, 255], [obj.x - self.camera.scroll[0], obj.y - self.camera.scroll[1], obj.width, obj.height], 1)
-
-
+        if 'show_hitbox' in self.DEBUG:
             for rect in db.tile_rects:
-                pygame.draw.rect(self.display, [255, 0, 0], [rect.x - self.camera.scroll[0], rect.y - self.camera.scroll[1], rect.width, rect.height], 1)
+                pygame.draw.rect(self.display, YELLOW, [rect.x - self.camera.scroll[0], rect.y - self.camera.scroll[1], rect.width, rect.height], 1)
 
             direction = ['left', 'right', 'up', 'down', 'surround']
             for direc in direction:
                 rect = self.player.get_nearby_rect(direc)
-                pygame.draw.rect(self.display, [0, 255, 0], [rect.x - self.camera.scroll[0], rect.y - self.camera.scroll[1], rect.width, rect.height], 1)
+                pygame.draw.rect(self.display, GREEN, [rect.x - self.camera.scroll[0], rect.y - self.camera.scroll[1], rect.width, rect.height], 1)
 
 
         surf = pygame.transform.scale(self.display, self.WINDOWN_SIZE)
