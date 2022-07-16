@@ -4,6 +4,8 @@ import engine.database as db
 from engine.map import map
 from engine.camera import camera
 from engine.core_funcs import *
+from engine.text import Font
+
 class Engine():
     def __init__(self, WINDOWN, IMG, MAP):
         self.WINDOWN_SIZE = WINDOWN['SIZE']
@@ -28,22 +30,30 @@ class Engine():
         self.multiply_factor = 0
         self.DEBUG = []
 
+        # { 'TEXT' : [pos, path, color, language] }
+        self.text = {}
+
     def load_map(self, level):
         self.map.load_map(level)
+        self.update()
 
     def update(self):
         db.DEBUG = self.DEBUG
         self.player = self.map.update(self.camera)
         self.camera.update(self.player, self.display)
 
+    def clean(self):
+        self.text = {}
+        db.object_camera = []
+        db.entity_camera = []
+
     def render(self):
         self.update()
-
-        self.display.fill([0, 0, 0])
 
         self.map.render(self.display, self.camera)
         self.entity_render(self.display, self.camera)
         self.object_render(self.display, self.camera)
+        self.font_render()
         self.player.render(self.display, self.camera)
 
         if 'show_hitbox' in self.DEBUG:
@@ -66,19 +76,43 @@ class Engine():
 
         db.multiply_factor = db.delta_time * db.FPS
         self.multiply_factor = db.multiply_factor
+        
+        self.display.fill([0, 0, 0])
+        self.clean()
 
     def object_render(self, surface, camera):
-        db.object_camera = []
-
         for object in db.objects:
             if object.rect.colliderect(camera.rect):
                 object.render(surface, camera)
                 db.object_camera.append(object)
 
     def entity_render(self, surface, camera):
-        db.entity_camera = []
-
         for entity in db.entities:
             if entity.rect.colliderect(camera.rect):
                 entity.render(surface, camera)
                 db.entity_camera.append(entity)
+
+    def font_render(self):
+        for text in self.text:
+            pos = self.text[text][0]
+            path = self.text[text][1]
+            color = self.text[text][2]
+            lang = self.text[text][3]
+
+            font = Font(path, color)
+            if lang == 'english':
+                font.render_english(text, self.display, pos)
+            elif lang == 'viet':
+                font.render_viet(text, self.display, pos)
+
+    def render_english(self, text, pos, size = 'small', color = WHITE):
+        
+        path = 'data/font/' + size + '_font.png'
+        pos = [pos[0] - self.camera.scroll[0], pos[1] - self.camera.scroll[1]]
+        self.text[text] = [pos, path, color, 'english']
+    
+    def render_viet(self, text, pos, size = 'small', color = WHITE):
+        
+        path = 'data/font/' + size + '_font.png'
+        pos = [pos[0] - self.camera.scroll[0], pos[1] - self.camera.scroll[1]]
+        self.text[text] = [pos, path, color, 'viet']

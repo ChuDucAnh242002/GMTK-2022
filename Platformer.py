@@ -12,7 +12,7 @@ clock = pygame.time.Clock()
 
 WINDOWN = {
     'SIZE': [960, 540],
-    'SCALE': 1,
+    'SCALE': 3,
     'FPS': 60
 }
 
@@ -27,15 +27,14 @@ MAP = {
 }
 
 e = Engine(WINDOWN, IMG, MAP)
-e.load_map(0)
-
 e.DEBUG = ['show_hitbox', 'hide_tile', 'no_img']
+e.load_map(0)
 
 while True:
 
     pygame.display.set_caption("FPS: " + str(clock.get_fps()))
 
-    e.render()
+    e.render_english("TEST", [464, 464])
 
     # for obj in db.object_camera:
     #     if obj.ID == 'stone' and 'stone' in e.player.near_by['surround']:
@@ -59,6 +58,6 @@ while True:
     elif key_pressed[K_DOWN]:
         e.player.move([0, 2])
     
-    clock.tick(e.FPS)
-
+    e.render()
+    clock.tick(60)
     pygame.display.update()

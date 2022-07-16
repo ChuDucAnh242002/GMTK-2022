@@ -32,6 +32,15 @@ entity_camera = []
 entities = []
 objects = []
 
+# Collide table
+COLLIDE_TABLE = [
+    ['pass', 'none', '3', 'none'],
+    ['none', 'pass', 'none', 'none'],
+    ['float', 'none', 'blow', 'pass'],
+    ['sink', '7', 'heavy', 'none']
+]
+
+
 class database():
     global img_database, animation_database, obj_database
     global tile_rects, entities, objects
