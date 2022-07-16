@@ -34,14 +34,8 @@ while True:
 
     pygame.display.set_caption("FPS: " + str(clock.get_fps()))
 
-    e.render_english("TEST", [464, 464])
-
-    # for obj in db.object_camera:
-    #     if obj.ID == 'stone' and 'stone' in e.player.near_by['surround']:
-    #         if 'stone' in e.player.near_by['right']:
-    #             obj.move([2, 0])
-    #         elif 'stone' in e.player.near_by['left']:
-    #             obj.move([-2, 0])
+    e.render_english("TEST", [464, 450], 'small')
+    e.render_english("TEST", [464, 464], 'large')
 
     for event in pygame.event.get():
         if event.type == QUIT:

@@ -30,8 +30,8 @@ class Engine():
         self.multiply_factor = 0
         self.DEBUG = []
 
-        # { 'TEXT' : [pos, path, color, language] }
-        self.text = {}
+        # [[text, pos, path, color, language] * n]
+        self.text = []
 
     def load_map(self, level):
         self.map.load_map(level)
@@ -43,7 +43,7 @@ class Engine():
         self.camera.update(self.player, self.display)
 
     def clean(self):
-        self.text = {}
+        self.text = []
         db.object_camera = []
         db.entity_camera = []
 
@@ -93,11 +93,12 @@ class Engine():
                 db.entity_camera.append(entity)
 
     def font_render(self):
-        for text in self.text:
-            pos = self.text[text][0]
-            path = self.text[text][1]
-            color = self.text[text][2]
-            lang = self.text[text][3]
+        for data in self.text:
+            text = data[0]
+            pos = data[1]
+            path = data[2]
+            color = data[3]
+            lang = data[4]
 
             font = Font(path, color)
             if lang == 'english':
@@ -109,10 +110,10 @@ class Engine():
         
         path = 'data/font/' + size + '_font.png'
         pos = [pos[0] - self.camera.scroll[0], pos[1] - self.camera.scroll[1]]
-        self.text[text] = [pos, path, color, 'english']
+        self.text.append([text, pos, path, color, 'english'])
     
     def render_viet(self, text, pos, size = 'small', color = WHITE):
         
         path = 'data/font/' + size + '_font.png'
         pos = [pos[0] - self.camera.scroll[0], pos[1] - self.camera.scroll[1]]
-        self.text[text] = [pos, path, color, 'viet']
+        self.text.append([text, pos, path, color, 'viet'])
