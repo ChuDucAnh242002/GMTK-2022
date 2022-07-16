@@ -16,6 +16,8 @@ PURPLE = (135, 30, 106)
 DARK_PURPLE = (69, 36, 89)
 PURPLE_BLACK = (38, 13, 52)
 
+COLORKEY = WHITE
+
 # read File
 def read_f(path):
     f = open(path, 'r')
