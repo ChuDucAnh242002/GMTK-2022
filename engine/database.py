@@ -1,13 +1,20 @@
-from numpy import multiply
 import pygame
 import os
+from engine.core_funcs import *
 
 FPS = 60
+IMG_SIZE = 8
+CHUNK_SIZE = 8
+DEBUG = []
+
 img_FPS = 12
 delta_time = 0
 multiply_factor = 0
 
-img_database = {}
+# { 'ID': [surface_img, name, type] } . Ex:  '1' : [surface, 'stone', 'object']
+# { 'type': [ [ID, surface] * n ]} . Ex: 'tile' : [ [0, bla bla], ...  ]
+
+tiles_and_fore_database = {}
 
 # { 'ID': [loc _img *60], ..... } . ID is filename  + status. ec=x: ID: coin_idle
 animation_database = {}
@@ -15,7 +22,13 @@ animation_database = {}
 # { 'ID': loc _img, ..... } . ID is filename + status. ec=x: ID: coin_idle
 obj_database = {}
 
+# Only collide with camera
 tile_rects = []
+tile_ID = []
+object_camera = []
+entity_camera = []
+
+# All entities, obj in the game
 entities = []
 objects = []
 
@@ -30,37 +43,60 @@ class database():
         img_FPS = input_img_FPS
         FPS = input_FPS//img_FPS * img_FPS
         
-        self.create_img_database()
+        self.tiles_path = 'data/tiles'
+        self.tile_size = [IMG_SIZE, IMG_SIZE]
+        self.create_tiles_and_fore_database()
 
         self.animation_path = 'data/animation'
-
-
         # { 'ID': [loc _img *60], ..... } . ID is filename + status. ec=x: ID: coin_idle
         self.create_animation_database(self.animation_path)
 
         self.obj_path = 'data/object'
         self.create_obj_database()
 
-    def create_img_database(self):
-        tile_path = 'data/tiles'
-        object_path = 'data/object'
-        entity_path = 'data/entity'
-        ID = 1
-        for tiles in os.listdir(tile_path):
-            img = pygame.image.load(tile_path + '/' + tiles)
-            img.set_colorkey([0, 0, 0])
-            img_database[ID] = [img, tiles[:-4], 'tile']
-            ID += 1
-        for obj in os.listdir(object_path):
-            img = pygame.image.load(object_path + '/' + obj)
-            img.set_colorkey([0, 0, 0])
-            img_database[ID] = [img, obj[:-4], 'object']
-            ID += 1
-        for entity in os.listdir(entity_path):
-            img = pygame.image.load(entity_path + '/' + entity)
-            img.set_colorkey([0, 0, 0])
-            img_database[ID] = [img, entity[:-4], 'entity']
-            ID += 1
+    def load_spritesheet_1(self, spritesheet, tile_size):
+        """
+        Param: full tileset image
+        return: dict with num of each tile
+        """
+        rows = []
+        spritesheet_dat = {}
+        for y in range(spritesheet.get_height()):
+            c = spritesheet.get_at((0, y))
+            c = (c[0], c[1], c[2])
+            if c == YELLOW:
+                rows.append(y)
+
+        num = 0 
+        for row in rows:
+            # row_content = []
+            for x in range(spritesheet.get_width()):
+                c = spritesheet.get_at((x, row))
+                c = (c[0], c[1], c[2])
+                if c == PINK:
+                    img = clip(spritesheet, x, row + 1, tile_size[0], tile_size[1])
+                    img.set_colorkey(COLORKEY)
+                    # row_content.append(img)
+                    spritesheet_dat[num] = img
+                    num += 1
+            # image for each row
+            # spritesheet_dat.append(row_content)
+        return spritesheet_dat
+
+    def create_tiles_and_fore_database(self):
+        # list of img name in path
+        spritesheet_list = os.listdir(self.tiles_path)
+
+        for img_file in spritesheet_list:
+            # find png
+            file_type = img_file.split('.')[-1]
+            if file_type == 'png':
+                file_path = self.tiles_path + '/' + img_file
+                # Example: tiles
+                file_name = img_file.split('.')[0]
+                spritesheet_dat = self.load_spritesheet_1(pygame.image.load(file_path), self.tile_size)
+                tiles_and_fore_database[file_name] = spritesheet_dat
+        print(tiles_and_fore_database)
 
     def create_animation_database(self, animation_path, animation_dir = []):
 

@@ -54,7 +54,7 @@ def load_spritesheet_1(spritesheet, tile_size):
     return: dict with num of each tile
     """
     rows = []
-    spritesheet_dat = {}
+    spritesheet_dat = []
     for y in range(spritesheet.get_height()):
         c = spritesheet.get_at((0, y))
         c = (c[0], c[1], c[2])
@@ -71,7 +71,7 @@ def load_spritesheet_1(spritesheet, tile_size):
                 img = clip(spritesheet, x, row + 1, tile_size[0], tile_size[1])
                 img.set_colorkey(COLORKEY)
                 # row_content.append(img)
-                spritesheet_dat[num] = img
+                spritesheet_dat.append([num, img])
                 num += 1
         # image for each row
         # spritesheet_dat.append(row_content)

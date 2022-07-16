@@ -23,15 +23,15 @@ img_size = (8, 8)
 font = Font("data/font/small_font.png", WHITE)
 # Contain ID of foreground and tiles
 spritesheet_data = load_spritesheets("data/images/tileset", img_size)
-# print(spritesheet_data)
-game_map = load_new_map("data/map/", 0)
-# print(game_map)
+print(spritesheet_data)
+game_map = load_new_map("data/map/", 1)
+print(game_map)
 
 
 # {'foreground': {ID: <Surface> * n}            ID of foreground and tiles
 #       'tiles' : {ID: <Surface> * n}
 
-#           level                                       
+#           level                                       c
 game_map = {0: 
             {'tile': {}, # {'0;0': [[[pos_x, pos_y], ID] * n]}
             'foreground': {}, # {'0;0': [[[pos_x, pos_y], ID] * n]}

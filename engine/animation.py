@@ -1,9 +1,12 @@
+from ast import PyCF_ALLOW_TOP_LEVEL_AWAIT
 import pygame
 import os
 import engine.database as db
 
+from engine.core_funcs import *
+
 class animation():
-    def __init__(self, ID, pos, status):
+    def __init__(self, ID, pos, status, tag):
         self.animation_path = 'data/animation'
         self.entity_path = "data/animation/entity"
         self.obj_path = "data/object"
@@ -16,8 +19,14 @@ class animation():
         self.x = pos[0]
         self.y = pos[1]
         self.offset = [0, 0]
-        self.rect = self.get_rect()
+        if 'no_img' in db.DEBUG:
+            self.rect = pygame.Rect(self.x, self.y, db.IMG_SIZE, db.IMG_SIZE)
+        else:
+            self.rect = self.get_rect()
+        self.width = self.rect.width
+        self.height = self.rect.height
         self.flip = False
+        self.tag = tag
 
     def render(self, surface, camera, draw = True) -> None:
 
@@ -26,35 +35,46 @@ class animation():
 
         scroll = camera.scroll
         pos = [self.pos[0] - scroll[0] + self.offset[0], self.pos[1] - scroll[1] + self.offset[1]]
-        obj_list = os.listdir(self.obj_path)
-        animation_list = os.listdir(self.animation_path)
-        entity_list = os.listdir(self.animation_path + '/entity')
 
-        if self.ID in animation_list or self.ID in entity_list:
-            try:
-                check_list = os.listdir(self.animation_path + '/' + self.ID)
-            except:
-                check_list = os.listdir(self.animation_path + '/entity/' + self.ID)
-
-            if check_list[0][-4:] != '.png':
-                ID = self.ID + '_' + self.status
+        if 'no_img' in db.DEBUG:
+            self.rect = pygame.Rect(self.pos[0], self.pos[1], self.rect.width, self.rect.height)
+            if 'player' in self.tag:
+                COLOR = RED  
             else:
-                ID = self.ID
-            if self.frame > len(db.animation_database[ID]) - 1:
-                self.frame = 0
+                COLOR = WHITE
+            pygame.draw.rect(surface, COLOR, [pos[0], pos[1], self.rect.width, self.rect.height])
+        else:
+            obj_list = os.listdir(self.obj_path)
+            animation_list = os.listdir(self.animation_path)
+            entity_list = os.listdir(self.animation_path + '/entity')
 
-            self.change_status(self.status)
-            frame_path = db.animation_database[str(ID)][self.frame]
-            frame_img = pygame.image.load(frame_path).convert()
-            frame_img.set_colorkey([0, 0, 0])
-            if draw:
-                surface.blit(pygame.transform.flip(frame_img, self.flip, False), pos)
-        elif self.ID + '.png' in obj_list:
-            self.frame = 0
-            ID = self.ID
-            obj_img = pygame.image.load(self.obj_path + '/' + ID + '.png')
-            if draw:
-                surface.blit(obj_img, pos)
+            if self.ID in animation_list or self.ID in entity_list:
+                try:
+                    check_list = os.listdir(self.animation_path + '/' + self.ID)
+                except:
+                    check_list = os.listdir(self.animation_path + '/entity/' + self.ID)
+
+                if check_list[0][-4:] != '.png':
+                    ID = self.ID + '_' + self.status
+                else:
+                    ID = self.ID
+                if self.frame > len(db.animation_database[ID]) - 1:
+                    self.frame = 0
+
+                self.change_status(self.status)
+                frame_path = db.animation_database[str(ID)][self.frame]
+                frame_img = pygame.image.load(frame_path).convert()
+                frame_img.set_colorkey([0, 0, 0])
+                self.rect = pygame.Rect(self.pos[0], self.pos[1], frame_img.get_width(), frame_img.get_height())
+                if draw:
+                    surface.blit(pygame.transform.flip(frame_img, self.flip, False), pos)
+            elif self.ID + '.png' in obj_list:
+                self.frame = 0
+                ID = self.ID
+                obj_img = pygame.image.load(self.obj_path + '/' + ID + '.png')
+                self.rect = pygame.Rect(self.pos[0], self.pos[1], obj_img.get_width(), obj_img.get_height())
+                if draw:
+                    surface.blit(obj_img, pos)
 
         self.frame += round(1 * db.multiply_factor)
 
