@@ -5,15 +5,14 @@ from engine.map import map
 from engine.camera import camera
 
 class Engine():
-    def __init__(self, WINDOWN_SIZE, SCALE, FPS, img_FPS):
+    def __init__(self, WINDOWN_SIZE, SCALE, FPS, img_FPS, total_level):
         self.WINDOWN_SIZE = WINDOWN_SIZE
         self.SCALE = SCALE
 
         db.database(FPS, img_FPS)
         self.FPS = db.FPS
 
-        self.map = map()
-        self.map.load_map('level_1')
+        self.map = map(total_level)
         self.player = None
 
         self.screen = pygame.display.set_mode(WINDOWN_SIZE)
@@ -24,12 +23,17 @@ class Engine():
         self.now_time = 0
         self.delta_time = 0
         self.multiply_factor = 0
+        self.DEBUG = False
+
+    def load_map(self, level):
+        self.map.load_map(level)
 
     def update(self):
+        db.DEBUG = self.DEBUG
         self.player = self.map.update(self.camera)
         self.camera.update(self.player, self.display)
 
-    def render(self, debug = False):
+    def render(self):
         self.update()
 
         self.display.fill([0, 0, 0])
@@ -39,7 +43,7 @@ class Engine():
         self.object_render(self.display, self.camera)
         self.player.render(self.display, self.camera)
 
-        if (debug):
+        if (self.DEBUG):
 
             for entity in db.entity_camera:
                 pygame.draw.rect(self.display, [0, 0, 255], [entity.x - self.camera.scroll[0], entity.y - self.camera.scroll[1], entity.width, entity.height], 1)

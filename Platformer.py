@@ -1,3 +1,4 @@
+from functools import total_ordering
 import pygame
 import sys
 from pygame.locals import *
@@ -13,24 +14,26 @@ clock = pygame.time.Clock()
 WINDOWN_SIZE = (960, 540)
 SCALE = 3
 FPS = 60
+IMG_SIZE = 8
 img_FPS = 12
+total_level = 1
 
-e = Engine(WINDOWN_SIZE, SCALE, FPS, img_FPS)
-
-DEBUG = True
+e = Engine(WINDOWN_SIZE, SCALE, FPS, img_FPS, total_level)
+e.load_map(0)
+e.DEBUG = True
 
 while True:
 
     pygame.display.set_caption("FPS: " + str(clock.get_fps()))
 
-    e.render(DEBUG)
+    e.render()
 
-    for obj in db.object_camera:
-        if obj.ID == 'stone' and 'stone' in e.player.near_by['surround']:
-            if 'stone' in e.player.near_by['right']:
-                obj.move([2, 0])
-            elif 'stone' in e.player.near_by['left']:
-                obj.move([-2, 0])
+    # for obj in db.object_camera:
+    #     if obj.ID == 'stone' and 'stone' in e.player.near_by['surround']:
+    #         if 'stone' in e.player.near_by['right']:
+    #             obj.move([2, 0])
+    #         elif 'stone' in e.player.near_by['left']:
+    #             obj.move([-2, 0])
 
     for event in pygame.event.get():
         if event.type == QUIT:

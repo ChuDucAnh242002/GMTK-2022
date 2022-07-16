@@ -23,7 +23,7 @@ img_size = (8, 8)
 font = Font("data/font/small_font.png", WHITE)
 # Contain ID of foreground and tiles
 spritesheet_data = load_spritesheets("data/images/tileset", img_size)
-#print(spritesheet_data)
+print(spritesheet_data)
 game_map = load_new_map("data/map/", 1)
 print(game_map)
 

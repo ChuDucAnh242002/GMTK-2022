@@ -6,37 +6,94 @@ from engine.object import object
 
 import engine.database as db
 
+from engine.core_funcs import *
+
 class map():
-    def __init__(self):
+    def __init__(self, total_level):
 
         # ID: [img_loaded, img_name, type] type can be obj, tile, entity
-        self.game_map = {'tile': {}, # {'0;0': [[[pos_x, pos_y], ID] * n]}
-                        'object': [], # [[[pos_x, pos_y], ID, name] * n]
-                        'entity': [] # [[[pos_x, pos_y], ID, name] * n]
-                        }
+        self.total_level = total_level
+        self.game_map = {
+            'tile': {}, # {'0;0': [[[pos_x, pos_y], ID] * n]}
+            'foreground': {}, # {'0;0': [[[pos_x, pos_y], ID] * n]}
+            'object': [], # [[[pos_x, pos_y], ID] * n]
+            'entity': [] # [[[pos_x, pos_y], ID] * n]
+            }
+
         self.player = None
 
-    def load_map(self, name):
+        self.domain = 'data/map/'
+        self.ALL_LAYER = []
+        self.TILE_LAYER = ["tile_layer_0", "tile_layer_1"]
+        self.ENTITY_LAYER = ["entity_layer_0"]
+        self.ALL_LAYER.extend(self.TILE_LAYER)
+        self.ALL_LAYER.extend(self.ENTITY_LAYER)
 
-        # Only collide with camera
-        db.tile_rects = []
-        db.tile_ID = []
-        db.object_camera = []
-        db.entity_camera = []
+    def load_map(self, level):
+        json_map = load_dict_json(self.domain, self.total_level, self.ALL_LAYER)
 
-        # All entities, obj in the game
-        db.entities = []
-        db.objects = []
+        self.game_map[level] = {'tile': {}, 
+            'foreground': [],
+            'object': [],
+            'entity': []
+            }
+        tiles, foreground = self.load_tile(level, json_map)
+        entities, objects = self.load_entity(level, json_map)
+        self.game_map["tile"] = tiles
+        self.game_map["foreground"] = foreground
+        self.game_map["entity"] = entities
+        self.game_map["object"] = objects
 
-        f = open('data/map/' + name + '.json', 'r')
-        self.game_map = json.load(f)
-        return self.game_map
+    def load_tile(self, level, json_map):
+        tiles = {}
+        foreground = {}
+        data2D_tile = json_map[level]["tile_layer_0"]
+        data2D_fore = json_map[level]["tile_layer_1"]
+        for y in range(len(data2D_tile)):
+            for x in range(len(data2D_tile[0])):
+                loc = [x * db.IMG_SIZE, y *db.IMG_SIZE]
+                pos_chunk = str(int(x // db.CHUNK_SIZE)) + ';' + str(int(y // db.CHUNK_SIZE))
+                id_tile = data2D_tile[y][x]
+                id_fore = data2D_fore[y][x]
+                data_tile = [loc, id_tile]
+                data_fore = [loc, id_fore]
+
+                if id_tile != -1:
+                    if pos_chunk not in tiles:
+                        tiles[pos_chunk] = [data_tile]
+                    elif data_tile not in tiles[pos_chunk]:
+                        tiles[pos_chunk].append(data_tile)
+
+                if id_fore != -1:
+                    if pos_chunk not in foreground:
+                        foreground[pos_chunk] = [data_fore]
+                    elif data_fore not in foreground[pos_chunk]:
+                        foreground[pos_chunk].append(data_fore)
+        return tiles, foreground
+
+    def load_entity(self, level, json_map):
+        entities = []
+        objects = []
+        if "entity_layer_0" in self.ENTITY_LAYER:
+            for entity in json_map[level]["entity_layer_0"]:
+                x = entity['x'] - entity['originX']
+                y = entity['y'] - entity['originY']
+                name = entity['name']
+                # id = entity['id']
+                entities.append([[x, y], name])
+        if "entity_layer_1" in self.ENTITY_LAYER:
+            for entity in json_map[level]["entity_layer_1"]:
+                x = entity['x'] - entity['originX']
+                y = entity['y'] - entity['originY']
+                name = entity['name']
+                # id = entity['id']
+                objects.append([[x, y], name])
+        return entities, objects
 
     def update(self, camera):
 
         db.tile_rects = []  # Must clear else lag :<
         db.tile_ID = []
-
         for type in self.game_map:
 
             if type == 'tile':
@@ -46,8 +103,8 @@ class map():
                         pos_x = data[0][0]
                         pos_y = data[0][1]
                         ID_im = data[1]
-                        data_width = db.img_database[ID_im][0].get_width()
-                        data_height = db.img_database[ID_im][0].get_height()
+                        data_width = db.tiles_and_fore_database[type][ID_im].get_width()
+                        data_height = db.tiles_and_fore_database[type][ID_im].get_height()
                         block_rect = pygame.Rect(pos_x, pos_y, data_width, data_height)
                         if block_rect.colliderect(camera.rect):
                             if ID_im not in [1, 2, 3, 23, 37, 50, 55, 56, 57, 58]:
@@ -56,8 +113,8 @@ class map():
 
             elif type == 'entity' and db.entities == []:
                 for data in self.game_map[type]:
-                    temp_entity = entity(data[2], data[0])
-                    if data[1] == 90:
+                    temp_entity = entity(data[1], data[0])
+                    if data[1] == 'Player':
                         if self.player == None:
                             self.player = temp_entity
                     else:
@@ -65,7 +122,7 @@ class map():
 
             elif type == 'object' and db.objects == []:
                 for data in self.game_map[type]:
-                    temp_object = object(data[2], data[0])
+                    temp_object = object(data[1], data[0])
                     if data[1] == 79:
                         temp_object.change_status('closed')
                         strange_door_rect = temp_object.rect
@@ -81,7 +138,7 @@ class map():
         scroll = camera.scroll
 
         for i in range(len(db.tile_ID)):
-            img = db.img_database[db.tile_ID[i]][0]
+            img = db.tiles_and_fore_database['tile'][db.tile_ID[i]]
             block_rect = db.tile_rects[i]
             surface.blit(img, [block_rect.x - scroll[0], block_rect.y - scroll[1]])
 
