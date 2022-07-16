@@ -35,13 +35,7 @@ entity_camera = []
 entities = []
 objects = []
 
-# Collide table
-COLLIDE_TABLE = [
-    ['pass', 'none', '3', 'none'],
-    ['none', 'pass', 'none', 'none'],
-    ['float', 'none', 'blow', 'pass'],
-    ['sink', '7', 'heavy', 'none']
-]
+
 
 
 def remove_object(object):

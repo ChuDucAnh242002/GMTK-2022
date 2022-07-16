@@ -1,6 +1,7 @@
 import engine.database as db
 from engine.entity import entity
 from mechanic.dice import dice
+from mechanic.element_effect import effect
 
 class player(entity):
     def __init__(self, ID, pos, status = 'idle', tag = ['entity', 'player']):

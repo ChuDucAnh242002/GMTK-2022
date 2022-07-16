@@ -68,7 +68,6 @@ while True:
     if key_pressed[K_DOWN]:
         player.move([0, 2])
         
-    
     e.render()
     clock.tick(60)
     pygame.display.update()
