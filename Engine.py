@@ -44,12 +44,17 @@ class Engine():
 
     def clean(self):
         self.text = []
+
+        db.tile_ID = []
+        db.tile_rects = []
+
+        db.fore_ID = []
+        db.fore_rects = []
+
         db.object_camera = []
         db.entity_camera = []
 
     def render(self):
-        self.update()
-
         self.map.render(self.display, self.camera)
         self.entity_render(self.display, self.camera)
         self.object_render(self.display, self.camera)
@@ -79,6 +84,7 @@ class Engine():
         
         self.display.fill([0, 0, 0])
         self.clean()
+        self.update()
 
     def object_render(self, surface, camera):
         for object in db.objects:

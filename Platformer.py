@@ -12,7 +12,7 @@ clock = pygame.time.Clock()
 
 WINDOWN = {
     'SIZE': [960, 540],
-    'SCALE': 3,
+    'SCALE': 1,
     'FPS': 60
 }
 
@@ -27,11 +27,11 @@ MAP = {
 }
 
 e = Engine(WINDOWN, IMG, MAP)
-e.DEBUG = ['show_hitbox', 'hide_tile', 'no_img']
+# e.DEBUG = ['show_hitbox', 'hide_tile', 'no_img']
+e.DEBUG = ['no_img']
 e.load_map(0)
 
 while True:
-
     pygame.display.set_caption("FPS: " + str(clock.get_fps()))
 
     e.render_english("TEST", [464, 450], 'small')
@@ -45,11 +45,11 @@ while True:
     key_pressed = pygame.key.get_pressed()
     if key_pressed[K_LEFT]:
         e.player.move([-2, 0])
-    elif key_pressed[K_RIGHT]:
+    if key_pressed[K_RIGHT]:
         e.player.move([2, 0])
-    elif key_pressed[K_UP]:
+    if key_pressed[K_UP]:
         e.player.move([0, -2])
-    elif key_pressed[K_DOWN]:
+    if key_pressed[K_DOWN]:
         e.player.move([0, 2])
     
     e.render()

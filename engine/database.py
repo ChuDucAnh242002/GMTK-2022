@@ -11,9 +11,8 @@ img_FPS = 12
 delta_time = 0
 multiply_factor = 0
 
-# { 'ID': [surface_img, name, type] } . Ex:  '1' : [surface, 'stone', 'object']
-# { 'type': [ [ID, surface] * n ]} . Ex: 'tile' : [ [0, bla bla], ...  ]
 
+# { 'type': [ [ID, surface] * n ]} . Ex: 'tile' : [ [0, bla bla], ...  ]
 tiles_and_fore_database = {}
 
 # { 'ID': [loc _img *60], ..... } . ID is filename  + status. ec=x: ID: coin_idle
@@ -25,6 +24,10 @@ obj_database = {}
 # Only collide with camera
 tile_rects = []
 tile_ID = []
+
+fore_rects = []
+fore_ID = []
+
 object_camera = []
 entity_camera = []
 
@@ -105,7 +108,6 @@ class database():
                 file_name = img_file.split('.')[0]
                 spritesheet_dat = self.load_spritesheet_1(pygame.image.load(file_path), self.tile_size)
                 tiles_and_fore_database[file_name] = spritesheet_dat
-        print(tiles_and_fore_database)
 
     def create_animation_database(self, animation_path, animation_dir = []):
 

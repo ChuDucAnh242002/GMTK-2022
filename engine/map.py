@@ -93,15 +93,11 @@ class map():
         return entities, objects
 
     def update(self, camera):
-
-        db.tile_rects = []  # Must clear else lag :<
-        db.tile_ID = []
         for type in self.game_map:
 
             if type == 'tile':
                 for chunk in self.game_map[type]:
                     for data in self.game_map[type][chunk]:
-
                         LOC_CHUNK = str(data[0][0]) + ';' + str(data[0][1])
                         pos_x = data[0][0]
                         pos_y = data[0][1]
@@ -112,7 +108,19 @@ class map():
                         if block_rect.colliderect(camera.rect):
                             db.tile_rects.append(block_rect)
                             db.tile_ID.append(ID_im)
-
+            elif type == 'foreground':
+                for chunk in self.game_map[type]:
+                    for data in self.game_map[type][chunk]:
+                        LOC_CHUNK = str(data[0][0]) + ';' + str(data[0][1])
+                        pos_x = data[0][0]
+                        pos_y = data[0][1]
+                        ID_im = data[1]
+                        data_width = db.tiles_and_fore_database[type][ID_im].get_width()
+                        data_height = db.tiles_and_fore_database[type][ID_im].get_height()
+                        block_rect = pygame.Rect(pos_x, pos_y, data_width, data_height)
+                        if block_rect.colliderect(camera.rect):
+                            db.fore_rects.append(block_rect)
+                            db.fore_ID.append(ID_im)
             elif type == 'entity' and db.entities == []:
                 for data in self.game_map[type]:
                     temp_entity = entity(data[1], data[0])
@@ -139,6 +147,13 @@ class map():
             
             if 'hide_tile' not in db.DEBUG:
                surface.blit(img, [block_rect.x - scroll[0], block_rect.y - scroll[1]])
-
+        
+        for i in range(len(db.fore_ID)):
+            img = db.tiles_and_fore_database['foreground'][db.fore_ID[i]]
+            block_rect = db.fore_rects[i]
+            
+            if 'hide_fore' not in db.DEBUG:
+               surface.blit(img, [block_rect.x - scroll[0], block_rect.y - scroll[1]])
+        
             # pygame.draw.rect(surface, [255, 0, 0],
             #                  [block_rect.x - scroll[0], block_rect.y - scroll[1], block_rect.width, block_rect.height], 1)
