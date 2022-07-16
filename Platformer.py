@@ -12,7 +12,7 @@ clock = pygame.time.Clock()
 
 WINDOWN = {
     'SIZE': [960, 540],
-    'SCALE': 1,
+    'SCALE': 3,
     'FPS': 60
 }
 
@@ -26,15 +26,15 @@ MAP = {
     'TOTAL_LEVEL': 1
 }
 
+pygame.display.set_caption("BoBoiGirl")
 e = Engine(WINDOWN, IMG, MAP)
 # e.DEBUG = ['show_hitbox', 'hide_tile', 'no_img']
 e.DEBUG = ['no_img']
 e.load_map(0)
 
 while True:
-    pygame.display.set_caption("FPS: " + str(clock.get_fps()))
 
-    e.render_english("TEST", [464, 450], 'small')
+    e.render_english(str(round(clock.get_fps(), 2)), [e.camera.x, e.camera.y], 'small')
     e.render_english("TEST", [464, 464], 'large')
 
     for event in pygame.event.get():

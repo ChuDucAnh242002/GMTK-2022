@@ -10,6 +10,8 @@ class camera():
         self.true_scroll = [0, 0]
         self.scroll = [0, 0]
         self.rect = pygame.Rect(self.scroll[0], self.scroll[1], self.WINDOWN_SIZE[0] / self.SCALE, self.WINDOWN_SIZE[1] / self.SCALE)
+        self.x = self.rect.x
+        self.y = self.rect.y
 
 
     def update(self, player, display):
@@ -22,4 +24,12 @@ class camera():
         scroll[1] = int(scroll[1])
 
         self.scroll = scroll
-        self.rect = pygame.Rect(self.scroll[0], self.scroll[1], self.WINDOWN_SIZE[0] / self.SCALE, self.WINDOWN_SIZE[1] / self.SCALE)
+        
+        self.rect = pygame.Rect(
+                self.scroll[0] - db.IMG_SIZE * 2, 
+                self.scroll[1] - db.IMG_SIZE * 2, 
+                self.WINDOWN_SIZE[0] / self.SCALE + db.IMG_SIZE * 4, 
+                self.WINDOWN_SIZE[1] / self.SCALE + db.IMG_SIZE * 4)
+
+        self.x = self.scroll[0]
+        self.y = self.scroll[1]
