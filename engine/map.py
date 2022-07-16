@@ -5,8 +5,9 @@ from engine.entity import entity
 from engine.object import object
 
 import engine.database as db
-
 from engine.core_funcs import *
+
+from mechanic.player import player
 
 class map():
     def __init__(self, total_level):
@@ -126,8 +127,7 @@ class map():
                     temp_entity = entity(data[1], data[0])
                     if data[1] == 'player' or data[1] == 'Player':
                         if self.player == None:
-                            self.player = temp_entity
-                            self.player.add_tag('player')
+                            self.player = player(data[1], data[0])
                     else:
                         db.entities.append(temp_entity)
 

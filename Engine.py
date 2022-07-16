@@ -36,6 +36,7 @@ class Engine():
     def load_map(self, level):
         self.map.load_map(level)
         self.update()
+        return self.player
 
     def update(self):
         db.DEBUG = self.DEBUG

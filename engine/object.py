@@ -53,12 +53,12 @@ class object(animation):
             for object in db.object_camera:
                 for direc in direction:
                     if (self.get_nearby_rect(direc)).colliderect(object.rect):
-                        self.near_by[direc].append(object.ID)
+                        self.near_by[direc].append(object)
             
             for entity in db.entity_camera:
                 for direc in direction:
                     if (self.get_nearby_rect(direc)).colliderect(entity.rect):
-                        self.near_by[direc].append(entity.ID)
+                        self.near_by[direc].append(entity)
 
     def get_nearby_rect(self, way):
         multi_x = 0

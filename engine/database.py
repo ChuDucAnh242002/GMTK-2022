@@ -44,6 +44,14 @@ COLLIDE_TABLE = [
 ]
 
 
+def remove_object(object):
+    object_camera.remove(object)
+    objects.remove(object)
+
+def add_object(object):
+    object_camera.append(object)
+    objects.append(object)
+
 class database():
     global img_database, animation_database, obj_database
     global tile_rects, entities, objects
@@ -128,3 +136,4 @@ class database():
         obj_list = os.listdir(self.obj_path)
         for obj in obj_list:
             obj_database[obj[:len(obj) - 4]] = self.obj_path + '/' + obj
+
