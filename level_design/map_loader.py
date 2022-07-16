@@ -19,7 +19,7 @@ CHUNK_SIZE = 8
 def load_new_map(domain, total_level):
     game_map = {}
     json_map = load_dict_json(domain, total_level, ALL_LAYER)
-    for level in range(total_level +1):
+    for level in range(total_level):
         game_map[level] = {'tile': {}, 
             'foreground': [],
             'object': [],
@@ -31,7 +31,6 @@ def load_new_map(domain, total_level):
         game_map[level]["foreground"] = foreground
         game_map[level]["entity"] = entities
         game_map[level]["object"] = objects
-
     return game_map
 
 def load_tile(level, json_map):
@@ -47,15 +46,18 @@ def load_tile(level, json_map):
             id_fore = data2D_fore[y][x]
             data_tile = [loc, id_tile]
             data_fore = [loc, id_fore]
-            if pos_chunk not in tiles:
-                tiles[pos_chunk] = [data_tile]
-            elif data_tile not in tiles[pos_chunk]:
-                tiles[pos_chunk].append(data_tile)
 
-            if pos_chunk not in foreground:
-                foreground[pos_chunk] = [data_fore]
-            elif data_fore not in foreground[pos_chunk]:
-                foreground[pos_chunk].append(data_fore)
+            if id_tile != -1:
+                if pos_chunk not in tiles:
+                    tiles[pos_chunk] = [data_tile]
+                elif data_tile not in tiles[pos_chunk]:
+                    tiles[pos_chunk].append(data_tile)
+
+            if id_fore != -1:
+                if pos_chunk not in foreground:
+                    foreground[pos_chunk] = [data_fore]
+                elif data_fore not in foreground[pos_chunk]:
+                    foreground[pos_chunk].append(data_fore)
     return tiles, foreground
 
 def load_entity(level, json_map):
