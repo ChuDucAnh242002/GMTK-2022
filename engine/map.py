@@ -25,7 +25,7 @@ class map():
         self.domain = 'data/map/'
         self.ALL_LAYER = []
         self.TILE_LAYER = ["tile_layer_0", "tile_layer_1"]
-        self.ENTITY_LAYER = ["entity_layer_0"]
+        self.ENTITY_LAYER = ["entity_layer_0", "entity_layer_1"]
         self.ALL_LAYER.extend(self.TILE_LAYER)
         self.ALL_LAYER.extend(self.ENTITY_LAYER)
 
@@ -43,6 +43,7 @@ class map():
         self.game_map["foreground"] = foreground
         self.game_map["entity"] = entities
         self.game_map["object"] = objects
+
 
     def load_tile(self, level, json_map):
         tiles = {}
@@ -69,6 +70,7 @@ class map():
                         foreground[pos_chunk] = [data_fore]
                     elif data_fore not in foreground[pos_chunk]:
                         foreground[pos_chunk].append(data_fore)
+
         return tiles, foreground
 
     def load_entity(self, level, json_map):
@@ -99,6 +101,7 @@ class map():
             if type == 'tile':
                 for chunk in self.game_map[type]:
                     for data in self.game_map[type][chunk]:
+
                         LOC_CHUNK = str(data[0][0]) + ';' + str(data[0][1])
                         pos_x = data[0][0]
                         pos_y = data[0][1]
@@ -107,14 +110,13 @@ class map():
                         data_height = db.tiles_and_fore_database[type][ID_im].get_height()
                         block_rect = pygame.Rect(pos_x, pos_y, data_width, data_height)
                         if block_rect.colliderect(camera.rect):
-                            if ID_im not in [1, 2, 3, 23, 37, 50, 55, 56, 57, 58]:
-                                db.tile_rects.append(block_rect)
-                                db.tile_ID.append(ID_im)
+                            db.tile_rects.append(block_rect)
+                            db.tile_ID.append(ID_im)
 
             elif type == 'entity' and db.entities == []:
                 for data in self.game_map[type]:
                     temp_entity = entity(data[1], data[0])
-                    if data[1] == 'Player':
+                    if data[1] == 'player' or data[1] == 'Player':
                         if self.player == None:
                             self.player = temp_entity
                             self.player.add_tag('player')
@@ -124,13 +126,6 @@ class map():
             elif type == 'object' and db.objects == []:
                 for data in self.game_map[type]:
                     temp_object = object(data[1], data[0])
-                    if data[1] == 79:
-                        temp_object.change_status('closed')
-                        strange_door_rect = temp_object.rect
-                        strange_door_ex = True
-                    elif data[1] == 78:
-                        temp_object.change_tag(['tile', 'movable'])
-                    
                     db.objects.append(temp_object)
 
         return self.player

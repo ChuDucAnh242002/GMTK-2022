@@ -12,7 +12,7 @@ clock = pygame.time.Clock()
 
 WINDOWN = {
     'SIZE': [960, 540],
-    'SCALE': 3,
+    'SCALE': 1,
     'FPS': 60
 }
 

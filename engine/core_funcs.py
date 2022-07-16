@@ -132,5 +132,6 @@ def load_dict_json(domain, level, layers):
                 level_map[layer] = load_layer(layer, map_path, "tile")
             if layer.find('entity') != -1:
                 level_map[layer] = load_layer(layer, map_path, "entity")
+        
         dict_map[index] = level_map
     return dict_map

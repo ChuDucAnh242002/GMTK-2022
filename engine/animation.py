@@ -37,12 +37,33 @@ class animation():
         pos = [self.pos[0] - scroll[0] + self.offset[0], self.pos[1] - scroll[1] + self.offset[1]]
 
         if 'no_img' in db.DEBUG:
+            BODER = 0
             self.rect = pygame.Rect(self.pos[0], self.pos[1], self.rect.width, self.rect.height)
             if 'player' in self.tag:
                 COLOR = RED  
             else:
-                COLOR = WHITE
-            pygame.draw.rect(surface, COLOR, [pos[0], pos[1], self.rect.width, self.rect.height])
+
+                if 'element' not in self.ID:
+                    BODER = 1
+                
+                if 'water' in self.ID:
+                    COLOR = BLUE
+                elif 'fire' in self.ID:
+                    COLOR = RED
+                elif 'wind' in self.ID:
+                    COLOR = GREEN
+                elif 'rock' in self.ID:
+                    COLOR = PINK
+                elif 'light' in self.ID:
+                    COLOR = WHITE
+                elif 'dark' in self.ID:
+                    COLOR = DARK_PURPLE
+                elif self.ID == 'energy_ball':
+                    COLOR = CYAN
+                elif self.ID == 'gate':
+                    COLOR = PURPLE
+            
+            pygame.draw.rect(surface, COLOR, [pos[0], pos[1], self.rect.width, self.rect.height], BODER)
         else:
             obj_list = os.listdir(self.obj_path)
             animation_list = os.listdir(self.animation_path)
