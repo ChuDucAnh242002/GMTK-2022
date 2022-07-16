@@ -1,4 +1,3 @@
-from functools import total_ordering
 import pygame
 import sys
 from pygame.locals import *
@@ -11,15 +10,25 @@ pygame.init()
 pygame.mixer.set_num_channels(64)
 clock = pygame.time.Clock()
 
-WINDOWN_SIZE = (960, 540)
-SCALE = 3
-FPS = 60
-IMG_SIZE = 8
-img_FPS = 12
-total_level = 1
+WINDOWN = {
+    'SIZE': [960, 540],
+    'SCALE': 3,
+    'FPS': 60
+}
 
-e = Engine(WINDOWN_SIZE, SCALE, FPS, img_FPS, total_level)
+IMG = {
+    'SIZE': 8,
+    'FPS': 12
+}
+
+MAP = {
+    'CHUNK_SIZE': 8,
+    'TOTAL_LEVEL': 1
+}
+
+e = Engine(WINDOWN, IMG, MAP)
 e.load_map(0)
+
 e.DEBUG = ['show_hitbox', 'hide_tile', 'no_img']
 
 while True:

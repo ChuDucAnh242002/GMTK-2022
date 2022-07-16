@@ -5,19 +5,22 @@ from engine.map import map
 from engine.camera import camera
 from engine.core_funcs import *
 class Engine():
-    def __init__(self, WINDOWN_SIZE, SCALE, FPS, img_FPS, total_level):
-        self.WINDOWN_SIZE = WINDOWN_SIZE
-        self.SCALE = SCALE
+    def __init__(self, WINDOWN, IMG, MAP):
+        self.WINDOWN_SIZE = WINDOWN['SIZE']
+        self.SCALE = WINDOWN['SCALE']
 
-        db.database(FPS, img_FPS)
+        db.database(WINDOWN['FPS'], IMG['FPS'])
+        db.CHUNK_SIZE = MAP['CHUNK_SIZE']
+        
         self.FPS = db.FPS
 
-        self.map = map(total_level)
+
+        self.map = map(MAP['TOTAL_LEVEL'])
         self.player = None
 
-        self.screen = pygame.display.set_mode(WINDOWN_SIZE)
-        self.display = pygame.Surface([WINDOWN_SIZE[0] / SCALE, WINDOWN_SIZE[1] / SCALE])
-        self.camera = camera(WINDOWN_SIZE, SCALE)
+        self.screen = pygame.display.set_mode(WINDOWN['SIZE'])
+        self.display = pygame.Surface([self.WINDOWN_SIZE[0] / self.SCALE, self.WINDOWN_SIZE[1] / self.SCALE])
+        self.camera = camera(WINDOWN['SIZE'], WINDOWN['SCALE'])
 
         self.prev_time = time.time()
         self.now_time = 0

@@ -19,7 +19,7 @@ class animation():
         self.x = pos[0]
         self.y = pos[1]
         self.offset = [0, 0]
-        if db.DEBUG:
+        if 'no_img' in db.DEBUG:
             self.rect = pygame.Rect(self.x, self.y, db.IMG_SIZE, db.IMG_SIZE)
         else:
             self.rect = self.get_rect()
