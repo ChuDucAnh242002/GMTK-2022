@@ -6,6 +6,19 @@
   "offsetY": 0,
   "layers": [
     {
+      "name": "entity_layer_0",
+      "_eid": "94713425",
+      "offsetX": 0,
+      "offsetY": 0,
+      "gridCellWidth": 8,
+      "gridCellHeight": 8,
+      "gridCellsX": 194,
+      "gridCellsY": 130,
+      "entities": [
+        {"name": "player", "id": 0, "_eid": "94680617", "x": 72, "y": 848, "originX": 0, "originY": -7}
+      ]
+    },
+    {
       "name": "entity_layer_1",
       "_eid": "94712885",
       "offsetX": 0,
@@ -51,19 +64,6 @@
         {"name": "energy_ball", "id": 34, "_eid": "94923314", "x": 1216, "y": 232, "originX": 0, "originY": -1},
         {"name": "wind", "id": 35, "_eid": "94818797", "x": 1008, "y": 136, "originX": 0, "originY": 0},
         {"name": "rock_element", "id": 36, "_eid": "94764214", "x": 1152, "y": 232, "originX": 0, "originY": -1}
-      ]
-    },
-    {
-      "name": "entity_layer_0",
-      "_eid": "94713425",
-      "offsetX": 0,
-      "offsetY": 0,
-      "gridCellWidth": 8,
-      "gridCellHeight": 8,
-      "gridCellsX": 194,
-      "gridCellsY": 130,
-      "entities": [
-        {"name": "player", "id": 0, "_eid": "94680617", "x": 72, "y": 848, "originX": 0, "originY": -7}
       ]
     },
     {

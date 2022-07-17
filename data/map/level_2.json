@@ -6,6 +6,19 @@
   "offsetY": 0,
   "layers": [
     {
+      "name": "entity_layer_0",
+      "_eid": "94713425",
+      "offsetX": 0,
+      "offsetY": 0,
+      "gridCellWidth": 8,
+      "gridCellHeight": 8,
+      "gridCellsX": 120,
+      "gridCellsY": 69,
+      "entities": [
+        {"name": "player", "id": 0, "_eid": "94680617", "x": 48, "y": 384, "originX": 0, "originY": -7}
+      ]
+    },
+    {
       "name": "entity_layer_1",
       "_eid": "94712885",
       "offsetX": 0,
@@ -22,19 +35,6 @@
         {"name": "fire_element", "id": 6, "_eid": "94768206", "x": 176, "y": 432, "originX": 0, "originY": -10},
         {"name": "fire", "id": 7, "_eid": "94814723", "x": 568, "y": 416, "originX": 0, "originY": -2},
         {"name": "gate", "id": 8, "_eid": "95204758", "x": 744, "y": 400, "originX": 0, "originY": 0}
-      ]
-    },
-    {
-      "name": "entity_layer_0",
-      "_eid": "94713425",
-      "offsetX": 0,
-      "offsetY": 0,
-      "gridCellWidth": 8,
-      "gridCellHeight": 8,
-      "gridCellsX": 120,
-      "gridCellsY": 69,
-      "entities": [
-        {"name": "player", "id": 0, "_eid": "94680617", "x": 48, "y": 384, "originX": 0, "originY": -7}
       ]
     },
     {
