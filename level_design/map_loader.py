@@ -65,15 +65,15 @@ def load_entity(level, json_map):
     objects = []
     if "entity_layer_0" in ENTITY_LAYER:
         for entity in json_map[level]["entity_layer_0"]:
-            x = entity['x'] - entity['originX']
-            y = entity['y'] - entity['originY']
+            x = entity['x'] + entity['originX']
+            y = entity['y'] + entity['originY']
             name = entity['name']
             # id = entity['id']
             entities.append([[x, y], name])
     if "entity_layer_1" in ENTITY_LAYER:
         for entity in json_map[level]["entity_layer_1"]:
-            x = entity['x'] - entity['originX']
-            y = entity['y'] - entity['originY']
+            x = entity['x'] + entity['originX']
+            y = entity['y'] + entity['originY']
             name = entity['name']
             # id = entity['id']
             objects.append([[x, y], name])
