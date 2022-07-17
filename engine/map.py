@@ -170,6 +170,10 @@ class map():
     def render(self, surface, camera):
         scroll = camera.scroll
 
+        bg = pygame.image.load('data/background/Background.png').convert()
+        bg = pygame.transform.scale(bg, [camera.rect.width, camera.rect.height])
+        surface.blit(bg, [camera.x - scroll[0], camera.y - scroll[1]])
+
         for i in range(len(db.tile_ID)):
             img = db.tiles_and_fore_database['tile'][db.tile_ID[i]]
             block_rect = db.tile_rects[i]

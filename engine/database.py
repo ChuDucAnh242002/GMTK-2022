@@ -1,3 +1,4 @@
+from tkinter.tix import WINDOW
 import pygame
 import os
 from engine.core_funcs import *
@@ -6,6 +7,7 @@ FPS = 60
 IMG_SIZE = 8
 CHUNK_SIZE = 8
 DEBUG = []
+WINDOWN_SIZE = [1080, 720]
 
 img_FPS = 12
 delta_time = 0
@@ -95,6 +97,7 @@ class database():
                 if c == PINK:
                     img = clip(spritesheet, x, row + 1, tile_size[0], tile_size[1])
                     img.set_colorkey(COLORKEY)
+                    img.set_colorkey(BLACK)
                     # row_content.append(img)
                     spritesheet_dat[num] = img
                     num += 1

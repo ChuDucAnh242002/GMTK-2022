@@ -89,7 +89,12 @@ class animation():
                 self.change_status(self.status)
                 frame_path = db.animation_database[str(ID)][self.frame]
                 frame_img = pygame.image.load(frame_path).convert()
-                frame_img.set_colorkey(COLORKEY)
+                    
+                if self.status == 'jump' or self.status == 'die':
+                    frame_img.set_colorkey(BLACK)
+                else:
+                    frame_img.set_colorkey(COLORKEY)
+                
                 self.rect = pygame.Rect(self.pos[0], self.pos[1], frame_img.get_width(), frame_img.get_height())
                 if draw:
                     surface.blit(pygame.transform.flip(frame_img, self.flip, False), pos)

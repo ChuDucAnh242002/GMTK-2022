@@ -10,6 +10,7 @@ class Engine():
     def __init__(self, WINDOWN, IMG, MAP):
         self.WINDOWN_SIZE = WINDOWN['SIZE']
         self.SCALE = WINDOWN['SCALE']
+        db.WINDOWN_SIZE = self.WINDOWN_SIZE
 
         db.database(WINDOWN['FPS'], IMG)
         db.CHUNK_SIZE = MAP['CHUNK_SIZE']
@@ -57,10 +58,11 @@ class Engine():
         db.fore_ID = []
         db.fore_rects = []
 
-        db.object_camera = []
-        db.entity_camera = []
+        
 
     def render(self, COLOR):
+        db.object_camera = []
+        db.entity_camera = []
         self.map.render(self.display, self.camera)
         self.entity_render(self.display, self.camera)
         self.object_render(self.display, self.camera)
