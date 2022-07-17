@@ -63,7 +63,7 @@ class map():
                         tiles[pos_chunk] = [data_tile]
                     elif data_tile not in tiles[pos_chunk]:
                         tiles[pos_chunk].append(data_tile)
-     
+
         for y in range(len(data2D_fore)):
             for x in range(len(data2D_fore[0])):
                 loc = [x * db.IMG_SIZE, y *db.IMG_SIZE]
@@ -93,7 +93,10 @@ class map():
 
                 name = entity['name']
                 # id = entity['id']
-                print(name, x, y)
+
+                # x, y = x * db.IMG_SIZE / 8, y * db.IMG_SIZE / 8
+
+
                 entities.append([[x, y], name])
         if "entity_layer_1" in self.ENTITY_LAYER:
             for entity in json_map["entity_layer_1"]:
@@ -106,6 +109,9 @@ class map():
 
                 name = entity['name']
                 # id = entity['id']
+
+                # x, y = x * db.IMG_SIZE / 8, y * db.IMG_SIZE / 8
+
                 objects.append([[x, y], name])
         return entities, objects
 
@@ -143,6 +149,7 @@ class map():
                     if data[1] == 'player' or data[1] == 'Player':
                         if self.player == None:
                             self.player = player(data[1], data[0])
+                            self.player.set_spawn(data[0])
                     else:
                         temp_entity = entity(data[1], data[0])
                         db.entities.append(temp_entity)

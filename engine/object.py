@@ -1,3 +1,4 @@
+from shutil import move
 import pygame
 import os
 import math
@@ -19,12 +20,18 @@ class object(animation):
         self.movement = [0, 0]
         self.y_momentum = 0
         self.check = 0
+        self.friction = [0, 0]
+        self.spawn_pos = [0, 0]
+
+    def set_spawn(self, pos):
+        self.spawn_pos = pos
 
     def render(self, surface, camera, draw=True) -> None:
         super().render(surface, camera, draw)
         self.update()
     
     def update(self):
+        super().update()
         self.update_tag()
         self.update_near_by()
 
@@ -62,20 +69,29 @@ class object(animation):
     def get_nearby_rect(self, way):
         multi_x = 0
         multi_y = 0
+        offset = [16, 16]
         
         if (way == 'left'):
             multi_x = -1
         if (way == 'right'):
-            multi_x = 1
+            multi_x = self.width / offset[0]
         if (way == 'up'):
             multi_y = -1
         if (way == 'down'):
-            multi_y = 1
+            multi_y = self.height /offset[1]
 
         if way != 'surround':
-            nearby_x = self.x + multi_x * self.width
-            nearby_y = self.y + multi_y * self.height
-            return pygame.Rect(nearby_x, nearby_y, self.width, self.height)
+            
+            if (way == 'left' or way == 'right'):
+                nearby_x = self.x + multi_x * offset[0]
+                nearby_y = self.y + multi_y * self.height
+                return pygame.Rect(nearby_x, nearby_y, offset[0], self.height)
+            else:
+                nearby_x = self.x + multi_x * self.width
+                nearby_y = self.y + multi_y * offset[1]
+                return pygame.Rect(nearby_x, nearby_y, self.width, offset[1])
+            
+            
         else:
             radius = [1, 1]
 
@@ -108,6 +124,13 @@ class object(animation):
         self.collision = {'top': False, 'bottom': False, 'right': False, 'left': False}
 
         # Update location x ---------------------------------------------------------------------------------------------------- #
+        if movement[0] >= self.friction[0]:
+            movement[0] -= self.friction[0]
+        elif movement[0] < -self.friction[0]:
+            movement[0] += self.friction[0]
+        else:
+            movement[0] = 0
+
         self.rect.x += movement[0]
         hit_list = self.collide_test()
         for tile in hit_list:
@@ -120,6 +143,13 @@ class object(animation):
         self.x = self.rect.x
 
         # Update location y ------------------------------------------------------------------------------------------------------------------ #
+        if movement[1] <= -self.friction[1]:
+            movement[1] += self.friction[1]
+        elif movement[1] > self.friction[1]:
+            movement[1] -= self.friction[1]
+        else:
+            movement[1] = 0
+        
         self.rect.y += movement[1]
         hit_list = self.collide_test()
         for tile in hit_list:

@@ -14,7 +14,7 @@ clock = pygame.time.Clock()
 
 WINDOWN = {
     'SIZE': [1080, 720],
-    'SCALE': 0.5,
+    'SCALE': 1,
     'FPS': 60
 }
 
@@ -30,7 +30,8 @@ MAP = {
 pygame.display.set_caption("BoBoiGirl")
 e = Engine(WINDOWN, IMG, MAP)
 # e.DEBUG = ['show_hitbox', 'hide_tile', 'no_img']
-e.DEBUG = ['show_hitbox']
+e.DEBUG = ['show_hitbox', 'hide_tile']
+# e.DEBUG = ['show_hitbox', 'no_img']
 # e.DEBUG = ['no_img']
 player = e.load_map(0)
 
@@ -48,17 +49,14 @@ while True:
     
     e.render_english("TEST", [464, 464], 'large')
 
-    # player.move([0, gravity])
-    # #print(player.collision)
+    player.move([0, gravity])
     
-    # gravity += 0.1
-    # if gravity > 3:
-    #     gravity = 3
+    gravity += 0.1
+    if gravity > 3:
+        gravity = 3
 
-    # if player.collision['bottom']:
-    #     gravity = 0
-
-    #print(player.collision['bottom'])
+    if player.collision['bottom'] or player.collision['top']:
+        gravity = 0
     
     for event in pygame.event.get():
         if event.type == QUIT:
@@ -66,19 +64,30 @@ while True:
             sys.exit()
         if event.type == KEYDOWN:
             if event.key == K_0:
-                player.roll()
-            if event.key == K_UP:
-                gravity = -3
+                if player.rolling == False:
+                    player.roll()
+            if event.key == K_UP and 'tile' in player.near_by['surround'] and 'tile' in player.near_by['down']:
+                gravity = -4
+
+                if player.hold_element != None:
+                    if 'wind' in player.hold_element.ID:
+                        gravity = -8
 
     key_pressed = pygame.key.get_pressed()
     if key_pressed[K_LEFT]:
-        player.move([-2, 0])
+        player.move([-3, 0])
     if key_pressed[K_RIGHT]:
-        player.move([2, 0])
-    if key_pressed[K_DOWN]:
-        player.move([0, 2])
-    if key_pressed[K_UP]:
-        player.move([0, -2])
+        player.move([3, 0])
+    
+    if key_pressed[K_1]:
+        player.hold_element.ID = 'water_element'
+    if key_pressed[K_2]:
+        player.hold_element.ID = 'fire_element'
+    if key_pressed[K_3]:
+        player.hold_element.ID = 'wind_element'
+    if key_pressed[K_4]:
+        player.hold_element.ID = 'stone_element'
+    
 
         
     e.render(BLACK)

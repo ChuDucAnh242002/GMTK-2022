@@ -36,7 +36,11 @@ entities = []
 objects = []
 
 
+def add_tile(tile):
+    tile_rects.append(tile)
 
+def remove_tile(tile):
+    tile_rects.remove(tile)
 
 def remove_object(object):
     object_camera.remove(object)

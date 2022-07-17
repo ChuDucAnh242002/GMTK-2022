@@ -28,10 +28,13 @@ class animation():
         self.flip = False
         self.tag = tag
 
-    def render(self, surface, camera, draw = True) -> None:
-
+    def update(self):
+        self.width = self.rect.width
+        self.height = self.rect.height
         self.x = self.pos[0]
         self.y = self.pos[1]
+
+    def render(self, surface, camera, draw = True) -> None:
 
         scroll = camera.scroll
         pos = [self.pos[0] - scroll[0] + self.offset[0], self.pos[1] - scroll[1] + self.offset[1]]
@@ -100,6 +103,9 @@ class animation():
                     surface.blit(obj_img, pos)
 
         self.frame += round(1 * db.multiply_factor)
+
+        self.update()
+
 
     def one_time(self, status, offset=[0, 0]) -> None:
         self.offset = offset

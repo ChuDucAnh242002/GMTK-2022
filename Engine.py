@@ -76,6 +76,9 @@ class Engine():
             for entity in db.entity_camera:
                 pygame.draw.rect(self.display, GREEN, [entity.rect.x - self.camera.scroll[0], entity.rect.y - self.camera.scroll[1], entity.rect.width, entity.rect.height], 1)
 
+        if 'show_hitbox_tile' in self.DEBUG:
+            for rect in db.tile_rects:
+                 pygame.draw.rect(self.display, YELLOW, [rect.x - self.camera.scroll[0], rect.y - self.camera.scroll[1], rect.width, rect.height], 1)
 
 
         surf = pygame.transform.scale(self.display, self.WINDOWN_SIZE)

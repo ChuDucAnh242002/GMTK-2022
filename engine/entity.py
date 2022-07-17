@@ -14,6 +14,7 @@ class entity(object):
         self.life = 1
         self.hitbox = self.rect
         
+        
     def visible_area(self, width, height, double_height=False) -> pygame.Rect:
         vis_x = self.x - width * self.rect.width
         vis_y = self.y - self.rect.height * height
