@@ -36,11 +36,25 @@ e = Engine(WINDOWN, IMG, MAP)
 # e.DEBUG = ['show_hitbox', 'no_img']
 # e.DEBUG = ['no_img']
 e.DEBUG = ['show_hitbox', 'show_hitbox_tile', 'hide_tile']
-player = e.load_map(3)
+
 
 gravity = 0
 
+level = 0
+start = True
+
 while True:
+
+    if start:
+        player = e.load_map(level)
+        start = False
+
+    for data in player.near_by['surround']:
+        if data != 'tile':
+            if data.ID == 'gate':
+                start = True
+                level += 1
+                continue
 
     e.render_english(str(round(clock.get_fps(), 2)), [e.camera.x, e.camera.y], 'small')
     e.render_english("Elements: " + str(len(player.dice.inventory)), [e.camera.x, e.camera.y + 8], 'small')
@@ -112,6 +126,9 @@ while True:
             if event.key == K_0:
                 if player.rolling == False:
                     player.roll()
+            elif event.key == K_5:
+                start = True
+                level += 2
 
 
     
@@ -124,8 +141,7 @@ while True:
         player.hold_element.ID = 'wind_element'
     if key_pressed[K_4]:
         player.hold_element.ID = 'stone_element'
-
+    
     e.render(BLACK)
-
     clock.tick(60)
     pygame.display.update()

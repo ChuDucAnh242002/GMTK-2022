@@ -34,6 +34,11 @@ class Engine():
         self.text = []
 
     def load_map(self, level):
+        self.player = None
+        self.map = map()
+        db.entities = []
+        db.objects = []
+
         self.map.load_map(level)
         self.update()
         return self.player

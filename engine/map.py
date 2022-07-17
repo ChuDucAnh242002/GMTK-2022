@@ -46,8 +46,6 @@ class map():
         self.game_map["entity"] = entities
         self.game_map["object"] = objects
 
-        print(self.game_map)
-
     def load_tile(self, json_map):
         tiles = {}
         foreground = {}
