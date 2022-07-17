@@ -15,15 +15,7 @@
       "gridCellsX": 120,
       "gridCellsY": 69,
       "entities": [
-        {"name": "player", "id": 0, "_eid": "94680617", "x": 168, "y": 368, "originX": 0, "originY": -7},
-        {"name": "energy_ball", "id": 1, "_eid": "94923314", "x": 224, "y": 416, "originX": 0, "originY": -9},
-        {"name": "rock_element", "id": 2, "_eid": "94764214", "x": 88, "y": 416, "originX": 0, "originY": -11},
-        {"name": "wind_element", "id": 6, "_eid": "94753656", "x": 32, "y": 416, "originX": 0, "originY": -8},
-        {"name": "wind", "id": 7, "_eid": "94818797", "x": 304, "y": 336, "originX": 0, "originY": 0},
-        {"name": "energy_ball", "id": 8, "_eid": "94923314", "x": 480, "y": 416, "originX": 0, "originY": -9},
-        {"name": "gate", "id": 10, "_eid": "95204758", "x": 824, "y": 384, "originX": 0, "originY": 0},
-        {"name": "rock", "id": 11, "_eid": "94817878", "x": 672, "y": 368, "originX": 0, "originY": -7},
-        {"name": "wind_element", "id": 12, "_eid": "94753656", "x": 536, "y": 416, "originX": 0, "originY": -8}
+        {"name": "player", "id": 14, "_eid": "94680617", "x": 144, "y": 360, "originX": 0, "originY": -7}
       ]
     },
     {
@@ -35,7 +27,16 @@
       "gridCellHeight": 8,
       "gridCellsX": 120,
       "gridCellsY": 69,
-      "entities": []
+      "entities": [
+        {"name": "wind_element", "id": 0, "_eid": "94753656", "x": 32, "y": 416, "originX": 0, "originY": -8},
+        {"name": "rock_element", "id": 1, "_eid": "94764214", "x": 88, "y": 416, "originX": 0, "originY": -11},
+        {"name": "energy_ball", "id": 2, "_eid": "94923314", "x": 224, "y": 416, "originX": 0, "originY": -9},
+        {"name": "wind", "id": 3, "_eid": "94818797", "x": 304, "y": 336, "originX": 0, "originY": 0},
+        {"name": "energy_ball", "id": 4, "_eid": "94923314", "x": 480, "y": 416, "originX": 0, "originY": -9},
+        {"name": "wind_element", "id": 5, "_eid": "94753656", "x": 536, "y": 416, "originX": 0, "originY": -8},
+        {"name": "gate", "id": 6, "_eid": "95204758", "x": 824, "y": 384, "originX": 0, "originY": 0},
+        {"name": "rock", "id": 7, "_eid": "94817878", "x": 688, "y": 416, "originX": 20, "originY": 40}
+      ]
     },
     {
       "name": "tile_layer_1",
