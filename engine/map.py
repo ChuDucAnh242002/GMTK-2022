@@ -1,3 +1,5 @@
+from math import gamma
+from socket import gethostbyname_ex
 import pygame
 import json
 # from engine.database import database as db
@@ -44,6 +46,7 @@ class map():
         self.game_map["entity"] = entities
         self.game_map["object"] = objects
 
+        print(self.game_map)
 
     def load_tile(self, json_map):
         tiles = {}
@@ -85,8 +88,8 @@ class map():
         if "entity_layer_0" in self.ENTITY_LAYER:
             for entity in json_map["entity_layer_0"]:
                 try:
-                    x = entity['x'] - entity['originX']
-                    y = entity['y'] - entity['originY']
+                    x = entity['x'] + entity['originX']
+                    y = entity['y'] + entity['originY']
                 except:
                     x = entity['x']
                     y = entity['y']
@@ -101,8 +104,8 @@ class map():
         if "entity_layer_1" in self.ENTITY_LAYER:
             for entity in json_map["entity_layer_1"]:
                 try:
-                    x = entity['x'] - entity['originX']
-                    y = entity['y'] - entity['originY']
+                    x = entity['x'] + entity['originX']
+                    y = entity['y'] + entity['originY']
                 except:
                     x = entity['x']
                     y = entity['y']

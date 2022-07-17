@@ -1,3 +1,4 @@
+from re import T
 from tkinter import N
 import pygame
 import sys
@@ -14,7 +15,7 @@ clock = pygame.time.Clock()
 
 WINDOWN = {
     'SIZE': [1080, 720],
-    'SCALE': 1,
+    'SCALE': 2,
     'FPS': 60
 }
 
@@ -30,7 +31,8 @@ MAP = {
 pygame.display.set_caption("BoBoiGirl")
 e = Engine(WINDOWN, IMG, MAP)
 # e.DEBUG = ['show_hitbox', 'hide_tile', 'no_img']
-e.DEBUG = ['show_hitbox', 'hide_tile']
+# e.DEBUG = ['show_hitbox', 'hide_tile']
+# e.DEBUG = ['show_hitbox']
 # e.DEBUG = ['show_hitbox', 'no_img']
 # e.DEBUG = ['no_img']
 player = e.load_map(0)
@@ -57,7 +59,7 @@ while True:
 
     if player.collision['bottom'] or player.collision['top']:
         gravity = 0
-    
+
     for event in pygame.event.get():
         if event.type == QUIT:
             pygame.quit()
@@ -67,13 +69,13 @@ while True:
                 if player.rolling == False:
                     player.roll()
             if event.key == K_UP and 'tile' in player.near_by['surround'] and 'tile' in player.near_by['down']:
-                gravity = -4
+                gravity = -2.5
 
                 if player.hold_element != None:
                     if 'wind' in player.hold_element.ID:
-                        gravity = -6
+                        gravity = -3.5
                     elif 'stone' in player.hold_element.ID:
-                        gravity = -3
+                        gravity = -2
 
     key_pressed = pygame.key.get_pressed()
     if key_pressed[K_LEFT]:
@@ -90,8 +92,7 @@ while True:
     if key_pressed[K_4]:
         player.hold_element.ID = 'stone_element'
     
-
-        
     e.render(BLACK)
+
     clock.tick(60)
     pygame.display.update()

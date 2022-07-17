@@ -161,6 +161,13 @@ class object(animation):
                 self.rect.top = tile.bottom
         self.y = self.rect.y
 
+        if movement[0] > 0:
+            self.flip = False
+        elif movement[0] < 0:
+            self.flip = True
+
+        print(self.flip)
+
         self.pos = [self.x, self.y]
 
     def attack_area(self, area, offset = [0, 0]) -> pygame.Rect:

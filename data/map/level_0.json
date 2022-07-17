@@ -152,7 +152,7 @@
       "offsetX": 0,
       "offsetY": 0,
       "gridCellWidth": 16,
-      "gridCellHeight": 16,
+      "gridCellHeight": 15,
       "gridCellsX": 97,
       "gridCellsY": 71,
       "tileset": "Ground",

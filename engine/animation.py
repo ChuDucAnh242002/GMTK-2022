@@ -101,8 +101,11 @@ class animation():
                 self.rect = pygame.Rect(self.pos[0], self.pos[1], obj_img.get_width(), obj_img.get_height())
                 if draw:
                     surface.blit(obj_img, pos)
-
+        
         self.frame += round(1 * db.multiply_factor)
+
+        # if 'player' in self.tag:
+        #     print(self.flip)
 
         self.update()
 
@@ -122,8 +125,7 @@ class animation():
         if self.frame == len(db.animation_database[ID]) - 1:
             self.frame = 0
 
-    def change_status(self, entity_new_status, flip = False) -> None:
-        self.flip = flip
+    def change_status(self, entity_new_status) -> None:
         if self.status != entity_new_status:
             self.status = entity_new_status
             self.frame = 0

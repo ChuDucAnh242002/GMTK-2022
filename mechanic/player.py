@@ -74,10 +74,11 @@ class player(entity):
         self.list_effects.append('none')
         for element in self.near_by['surround']:
             if element != 'tile':
-                if 'element' not in element.ID and element.ID != 'energy_ball':
-                    if ('none' in self.list_effects):
-                        self.list_effects = []
-                    self.list_effects.append([element, self.effect.get_effect(self.hold_element, element)])
+                if 'element' not in element.ID:
+                    if element.ID in ['water', 'fire', 'wind', 'stone']:
+                        if ('none' in self.list_effects):
+                            self.list_effects = []
+                        self.list_effects.append([element, self.effect.get_effect(self.hold_element, element)])
 
         self.apply_effect()
 
@@ -121,3 +122,5 @@ class player(entity):
                             self.move([0, 1])
                         if obstacle in self.near_by['down']:
                             self.move([0, -1])
+                elif effect == 'float':
+                    pass
