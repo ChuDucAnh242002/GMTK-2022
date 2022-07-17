@@ -43,7 +43,7 @@ class animation():
                 COLOR = RED  
             else:
 
-                if 'element' not in self.ID:
+                if 'element' in self.ID:
                     BODER = 1
                 
                 if 'water' in self.ID:
@@ -60,6 +60,7 @@ class animation():
                     COLOR = DARK_PURPLE
                 elif self.ID == 'energy_ball':
                     COLOR = CYAN
+                    BODER = 1
                 elif self.ID == 'gate':
                     COLOR = PURPLE
             

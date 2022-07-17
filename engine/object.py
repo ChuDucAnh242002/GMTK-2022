@@ -123,8 +123,10 @@ class object(animation):
         # Update location y ------------------------------------------------------------------------------------------------------------------ #
         self.rect.y += movement[1]
         hit_list = self.collide_test()
+        print(hit_list)
         for tile in hit_list:
             if movement[1] >= 0:
+                print("TRUE")
                 self.collision['bottom'] = True
                 self.rect.bottom = tile.top
             elif movement[1] < 0:

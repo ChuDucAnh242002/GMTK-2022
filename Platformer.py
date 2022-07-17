@@ -12,26 +12,28 @@ pygame.mixer.set_num_channels(64)
 clock = pygame.time.Clock()
 
 WINDOWN = {
-    'SIZE': [960, 540],
+    'SIZE': [1080, 720],
     'SCALE': 3,
     'FPS': 60
 }
 
 IMG = {
-    'SIZE': 8,
+    'SIZE': 16,
     'FPS': 12
 }
 
 MAP = {
     'CHUNK_SIZE': 8,
-    'TOTAL_LEVEL': 1
+    'TOTAL_LEVEL': 2
 }
 
 pygame.display.set_caption("BoBoiGirl")
 e = Engine(WINDOWN, IMG, MAP)
-e.DEBUG = ['show_hitbox', 'hide_tile', 'no_img']
-# e.DEBUG = ['no_img']
-player = e.load_map(0)
+# e.DEBUG = ['show_hitbox', 'hide_tile', 'no_img']
+e.DEBUG = ['no_img']
+player = e.load_map(1)
+
+gravity = 0
 
 while True:
 
@@ -43,9 +45,21 @@ while True:
     else:
         e.render_english("Holding: " + str(player.hold_element.ID), [e.camera.x, e.camera.y + 8*3], 'small')
     
-    
     e.render_english("TEST", [464, 464], 'large')
 
+    print(gravity)
+    player.move([0, gravity])
+    #print(player.collision)
+    
+    gravity += 0.1
+    if gravity > 3:
+        gravity = 3
+
+    if player.collision['bottom']:
+        gravity = 0
+
+    #print(player.collision['bottom'])
+    
     for event in pygame.event.get():
         if event.type == QUIT:
             pygame.quit()
@@ -53,20 +67,17 @@ while True:
         if event.type == KEYDOWN:
             if event.key == K_0:
                 player.roll()
-
-    for element in player.dice.inventory:
-        print(element.ID, end = " ")
-    print()
+            if event.key == K_UP:
+                gravity = -3
 
     key_pressed = pygame.key.get_pressed()
     if key_pressed[K_LEFT]:
         player.move([-2, 0])
     if key_pressed[K_RIGHT]:
         player.move([2, 0])
-    if key_pressed[K_UP]:
-        player.move([0, -2])
     if key_pressed[K_DOWN]:
         player.move([0, 2])
+
         
     e.render()
     clock.tick(60)
