@@ -32,7 +32,8 @@ class player(entity):
                 self.rolling = False
 
         if self.hold_element == None:
-            self.change_status('normal')
+            if (self.status != 'die') and self.status != 'walk':
+                self.change_status('normal')
         elif 'water' in self.hold_element.ID:
             self.change_status('water')
         elif 'wind' in self.hold_element.ID:
@@ -90,7 +91,11 @@ class player(entity):
             obstacle = data[0]
 
             if effect == 'die':
-                self.rect.x, self.rect.y = self.spawn_pos.copy()
+                self.change_status('die')
+                
+                if self.frame >= len(db.animation_database[self.ID + '_' + self.status]):
+                    self.rect.x, self.rect.y = self.spawn_pos.copy()
+                    self.change_status('normal')
                 return
 
             if effect == 'none':

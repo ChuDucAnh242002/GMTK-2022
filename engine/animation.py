@@ -101,12 +101,12 @@ class animation():
                 self.rect = pygame.Rect(self.pos[0], self.pos[1], obj_img.get_width(), obj_img.get_height())
                 if draw:
                     surface.blit(obj_img, pos)
-        
+    
         self.frame += round(1 * db.multiply_factor)
 
         # if 'player' in self.tag:
         #     print(self.flip)
-
+        
         self.update()
 
 

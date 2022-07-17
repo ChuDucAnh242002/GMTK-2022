@@ -21,7 +21,7 @@ WINDOWN = {
 
 IMG = {
     'SIZE': 16,
-    'FPS': 12
+    'FPS': 3
 }
 
 MAP = {
@@ -36,10 +36,10 @@ e = Engine(WINDOWN, IMG, MAP)
 # e.DEBUG = ['show_hitbox', 'no_img']
 # e.DEBUG = ['no_img']
 player = e.load_map(3)
-
 print(db.IMG_SIZE)
 
 gravity = 0
+
 
 while True:
 
@@ -70,20 +70,29 @@ while True:
             if event.key == K_0:
                 if player.rolling == False:
                     player.roll()
-            if event.key == K_UP and 'tile' in player.near_by['surround'] and 'tile' in player.near_by['down']:
+            if event.key == K_UP and 'tile' in player.near_by['surround'] and 'tile' in player.near_by['down'] and player.status != 'die':
                 gravity = -2.5
-
+                player.change_status('jump')
                 if player.hold_element != None:
                     if 'wind' in player.hold_element.ID:
                         gravity = -3.5
                     elif 'stone' in player.hold_element.ID:
                         gravity = -2
 
+
     key_pressed = pygame.key.get_pressed()
-    if key_pressed[K_LEFT]:
-        player.move([-3, 0])
-    if key_pressed[K_RIGHT]:
-        player.move([3, 0])
+    if player.status != 'die':
+        if key_pressed[K_LEFT]:
+            player.move([-3, 0])
+            player.change_status('walk')
+        if key_pressed[K_RIGHT]:
+            player.move([3, 0])
+            player.change_status('walk')
+    
+    if 'tile' not in player.near_by['surround']:
+        if 'tile' not in player.near_by['down'] and player.status != 'walk' and not player.collision['bottom']:
+            # player.change_status('jump')
+            pass
     
     if key_pressed[K_1]:
         player.hold_element.ID = 'water_element'
