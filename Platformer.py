@@ -35,11 +35,10 @@ e = Engine(WINDOWN, IMG, MAP)
 # e.DEBUG = ['show_hitbox']
 # e.DEBUG = ['show_hitbox', 'no_img']
 # e.DEBUG = ['no_img']
+e.DEBUG = ['show_hitbox', 'show_hitbox_tile', 'hide_tile']
 player = e.load_map(3)
-print(db.IMG_SIZE)
 
 gravity = 0
-
 
 while True:
 
@@ -62,12 +61,7 @@ while True:
     if player.collision['bottom'] or player.collision['top']:
         gravity = 0
 
-
-
-
     key_pressed = pygame.key.get_pressed()
-
-    print(player.status)
 
     if player.status != 'die':
         if not key_pressed[K_LEFT] and not key_pressed[K_RIGHT] and player.status != 'jump':
@@ -82,7 +76,7 @@ while True:
                 player.change_status(player.hold_element.ID[:len(player.hold_element.ID) - len('_element')])
 
         if key_pressed[K_UP]:
-            if 'tile' in player.near_by['surround'] and 'tile' in player.near_by['down'] and player.status != 'die':
+            if ('tile' in player.near_by['surround'] and 'tile' in player.near_by['down'] and player.status != 'die'):
                 gravity = -2.5
                 player.change_status('jump')
                 if player.hold_element != None:
@@ -90,6 +84,17 @@ while True:
                         gravity = -3.5
                     elif 'stone' in player.hold_element.ID:
                         gravity = -2
+            for data in player.list_effects:
+                effect = data[1]
+                if effect == 'float':
+                    gravity = -2.5
+                player.change_status('jump')
+                if player.hold_element != None:
+                    if 'wind' in player.hold_element.ID:
+                        gravity = -3.5
+                    elif 'stone' in player.hold_element.ID:
+                        gravity = -2
+
         elif key_pressed[K_LEFT]:
             player.move([-3, 0])
             if player.status != 'jump':
@@ -98,7 +103,6 @@ while True:
             player.move([3, 0])
             if player.status != 'jump':
                 player.change_status('walk')
-
 
     for event in pygame.event.get():
         if event.type == QUIT:

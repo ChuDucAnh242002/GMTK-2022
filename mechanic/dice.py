@@ -10,7 +10,7 @@ class dice:
         self.pos = pos
         
         self.roll = False
-        self.roll_time = 2 + random.randint(0, 10)/10
+        self.roll_time = 1 + random.randint(0, 10)/10
         self.speed_roll = random.randint(10, 20)
 
         self.time = 0
