@@ -7,6 +7,8 @@ from engine.core_funcs import *
 import engine.database as db
 import random
 
+from mechanic.dice import dice
+
 # Setting enviromental ------------------------------------------------------------------------------------------------------------------ #
 pygame.mixer.init()
 pygame.init()
@@ -73,7 +75,10 @@ steam = pygame.mixer.Sound('data/music/Steam.wav')
 steam.set_volume(0.3)
 steam.play()
 
-fall = pygame.mixer.Sound('data/music/Rock Fall.wav')
+die = pygame.mixer.Sound('data/music/Rock Fall.wav')
+die.set_volume(0.7)
+die_play = False
+
 jump = [
     pygame.mixer.Sound('data/music/Jump_1.wav'),
     pygame.mixer.Sound('data/music/Jump_2.wav')
@@ -118,7 +123,14 @@ while True:
 
     if 'blow' in player.list_effects:
         blow.play()
-    
+
+    if player.status == 'die' and player.frame < 10:
+        if die_play == False:
+            die.play()
+            die_play = True
+    if player.pos == player.spawn_pos:
+        die_play = False
+
     if 'float' in player.list_effects:
         if swimming_play == False:
             swimming.play(-1)
@@ -135,7 +147,7 @@ while True:
         underwater_play = False
         underwater.stop()
 
-    if 'die' in player.list_effects:
+    if 'die' in player.list_effects and player.status == 'die':
         if player.hold_element != 'None':
             if player.hold_element.ID == 'fire' and 'water' in obj_ID:
                 steam.play()

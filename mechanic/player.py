@@ -95,7 +95,7 @@ class player(entity):
                     self.rect.x, self.rect.y = self.spawn_pos.copy()
                     self.x, self.y = self.spawn_pos.copy()
                     self.pos = self.spawn_pos.copy()
-                    self.list_effects = []
+                    self.list_effects = ['spawn']
                 return
 
             if effect == 'none':
