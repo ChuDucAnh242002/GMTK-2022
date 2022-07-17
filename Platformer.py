@@ -30,7 +30,8 @@ MAP = {
 pygame.display.set_caption("BoBoiGirl")
 e = Engine(WINDOWN, IMG, MAP)
 # e.DEBUG = ['show_hitbox', 'hide_tile', 'no_img']
-e.DEBUG = ['no_img']
+e.DEBUG = ['show_hitbox']
+# e.DEBUG = ['no_img']
 player = e.load_map(0)
 
 gravity = 0

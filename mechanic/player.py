@@ -4,7 +4,7 @@ from mechanic.dice import dice
 from mechanic.element_effect import effect
 
 class player(entity):
-    def __init__(self, ID, pos, status = 'idle', tag = ['entity', 'player']):
+    def __init__(self, ID, pos, status = 'normal', tag = ['entity', 'player']):
         super().__init__(ID, pos, status, tag)
         self.dice = dice()
         self.energy = 0

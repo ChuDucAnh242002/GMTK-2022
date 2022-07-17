@@ -124,11 +124,11 @@ class map():
                             db.fore_ID.append(ID_im)
             elif type == 'entity' and db.entities == []:
                 for data in self.game_map[type]:
-                    temp_entity = entity(data[1], data[0])
                     if data[1] == 'player' or data[1] == 'Player':
                         if self.player == None:
                             self.player = player(data[1], data[0])
                     else:
+                        temp_entity = entity(data[1], data[0])
                         db.entities.append(temp_entity)
 
             elif type == 'object' and db.objects == []:
