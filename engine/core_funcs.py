@@ -118,7 +118,7 @@ def load_layer(name, path, type):
     for layer in layers:
         if layer["name"] == name:
             if type == "tile":
-                return layer["data2D"]
+                return [layer["data2D"], [layer["gridCellWidth"], layer["gridCellHeight"]]]
             elif type == "entity":
                 return layer["entities"]
 

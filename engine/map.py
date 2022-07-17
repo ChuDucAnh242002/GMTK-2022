@@ -54,9 +54,14 @@ class map():
         data2D_tile = json_map["tile_layer_0"]
         data2D_fore = json_map["tile_layer_1"]
 
+        TILE_SIZE = data2D_tile[1]
+        data2D_tile = data2D_tile[0]
+        FORE_SIZE = data2D_fore[1]
+        data2D_fore = data2D_fore[0]
+
         for y in range(len(data2D_tile)):
             for x in range(len(data2D_tile[0])):
-                loc = [x * db.IMG_SIZE, y *db.IMG_SIZE]
+                loc = [x * TILE_SIZE[0], y * TILE_SIZE[1]]
                 pos_chunk = str(int(x // db.CHUNK_SIZE)) + ';' + str(int(y // db.CHUNK_SIZE))
                 id_tile = data2D_tile[y][x]
                 data_tile = [loc, id_tile]
@@ -69,7 +74,7 @@ class map():
 
         for y in range(len(data2D_fore)):
             for x in range(len(data2D_fore[0])):
-                loc = [x * db.IMG_SIZE, y *db.IMG_SIZE]
+                loc = [x * FORE_SIZE[0], y * FORE_SIZE[1]]
                 pos_chunk = str(int(x // db.CHUNK_SIZE)) + ';' + str(int(y // db.CHUNK_SIZE))
                 id_fore = data2D_fore[y][x]
                 data_fore = [loc, id_fore]

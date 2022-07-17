@@ -15,7 +15,7 @@ clock = pygame.time.Clock()
 
 WINDOWN = {
     'SIZE': [1080, 720],
-    'SCALE': 2,
+    'SCALE': 1,
     'FPS': 60
 }
 
@@ -35,7 +35,9 @@ e = Engine(WINDOWN, IMG, MAP)
 # e.DEBUG = ['show_hitbox']
 # e.DEBUG = ['show_hitbox', 'no_img']
 # e.DEBUG = ['no_img']
-player = e.load_map(0)
+player = e.load_map(3)
+
+print(db.IMG_SIZE)
 
 gravity = 0
 
