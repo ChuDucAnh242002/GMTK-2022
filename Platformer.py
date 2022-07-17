@@ -62,6 +62,44 @@ while True:
     if player.collision['bottom'] or player.collision['top']:
         gravity = 0
 
+
+
+
+    key_pressed = pygame.key.get_pressed()
+
+    print(player.status)
+
+    if player.status != 'die':
+        if not key_pressed[K_LEFT] and not key_pressed[K_RIGHT] and player.status != 'jump':
+            if player.hold_element == None:
+                player.change_status('normal')
+            else:
+                player.change_status(player.hold_element.ID[:len(player.hold_element.ID) - len('_element')])
+        if player.collision['bottom'] and player.status == 'jump':
+            if player.hold_element == None:
+                player.change_status('normal')
+            else:
+                player.change_status(player.hold_element.ID[:len(player.hold_element.ID) - len('_element')])
+
+        if key_pressed[K_UP]:
+            if 'tile' in player.near_by['surround'] and 'tile' in player.near_by['down'] and player.status != 'die':
+                gravity = -2.5
+                player.change_status('jump')
+                if player.hold_element != None:
+                    if 'wind' in player.hold_element.ID:
+                        gravity = -3.5
+                    elif 'stone' in player.hold_element.ID:
+                        gravity = -2
+        elif key_pressed[K_LEFT]:
+            player.move([-3, 0])
+            if player.status != 'jump':
+                player.change_status('walk')
+        elif key_pressed[K_RIGHT]:
+            player.move([3, 0])
+            if player.status != 'jump':
+                player.change_status('walk')
+
+
     for event in pygame.event.get():
         if event.type == QUIT:
             pygame.quit()
@@ -70,29 +108,9 @@ while True:
             if event.key == K_0:
                 if player.rolling == False:
                     player.roll()
-            if event.key == K_UP and 'tile' in player.near_by['surround'] and 'tile' in player.near_by['down'] and player.status != 'die':
-                gravity = -2.5
-                player.change_status('jump')
-                if player.hold_element != None:
-                    if 'wind' in player.hold_element.ID:
-                        gravity = -3.5
-                    elif 'stone' in player.hold_element.ID:
-                        gravity = -2
 
 
-    key_pressed = pygame.key.get_pressed()
-    if player.status != 'die':
-        if key_pressed[K_LEFT]:
-            player.move([-3, 0])
-            player.change_status('walk')
-        if key_pressed[K_RIGHT]:
-            player.move([3, 0])
-            player.change_status('walk')
     
-    if 'tile' not in player.near_by['surround']:
-        if 'tile' not in player.near_by['down'] and player.status != 'walk' and not player.collision['bottom']:
-            # player.change_status('jump')
-            pass
     
     if key_pressed[K_1]:
         player.hold_element.ID = 'water_element'
@@ -102,7 +120,7 @@ while True:
         player.hold_element.ID = 'wind_element'
     if key_pressed[K_4]:
         player.hold_element.ID = 'stone_element'
-    
+
     e.render(BLACK)
 
     clock.tick(60)

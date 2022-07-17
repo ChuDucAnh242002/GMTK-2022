@@ -17,10 +17,10 @@ class player(entity):
         self.rolling = False
 
     def update(self):
+        self.update_effect()
         super().update()
         self.update_status()
         self.collect_element()
-        self.update_effect()
         self.dice.update(self.pos)
 
     def update_status(self):
@@ -30,18 +30,6 @@ class player(entity):
             if (hold_temp != None):
                 self.hold_element = hold_temp
                 self.rolling = False
-
-        if self.hold_element == None:
-            if (self.status != 'die') and self.status != 'walk':
-                self.change_status('normal')
-        elif 'water' in self.hold_element.ID:
-            self.change_status('water')
-        elif 'wind' in self.hold_element.ID:
-            self.change_status('wind')
-        elif 'stone' in self.hold_element.ID:
-            self.change_status('stone')
-        elif 'fire' in self.hold_element.ID:
-            self.change_status('fire')
 
 
     def render(self, display, camera):
@@ -92,10 +80,15 @@ class player(entity):
 
             if effect == 'die':
                 self.change_status('die')
-                
                 if self.frame >= len(db.animation_database[self.ID + '_' + self.status]):
+                    if self.hold_element == None:
+                        self.change_status('normal')
+                    else:
+                        self.change_status(self.hold_element.ID[:len(self.hold_element.ID) - len('_element')])
                     self.rect.x, self.rect.y = self.spawn_pos.copy()
-                    self.change_status('normal')
+                    self.x, self.y = self.spawn_pos.copy()
+                    self.pos = self.spawn_pos.copy()
+                    self.list_effects = []
                 return
 
             if effect == 'none':
