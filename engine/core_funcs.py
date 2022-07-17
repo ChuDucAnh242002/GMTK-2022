@@ -123,15 +123,11 @@ def load_layer(name, path, type):
                 return layer["entities"]
 
 def load_dict_json(domain, level, layers):
-    dict_map = {}
     level_map = {}
-    for index in range(level):
-        map_path = domain + "level_" + str(index)
-        for layer in layers:
-            if layer.find('tile') != -1:
-                level_map[layer] = load_layer(layer, map_path, "tile")
-            if layer.find('entity') != -1:
-                level_map[layer] = load_layer(layer, map_path, "entity")
-        
-        dict_map[index] = level_map
-    return dict_map
+    map_path = domain + "level_" + str(level)
+    for layer in layers:
+        if layer.find('tile') != -1:
+            level_map[layer] = load_layer(layer, map_path, "tile")
+        if layer.find('entity') != -1:
+            level_map[layer] = load_layer(layer, map_path, "entity")
+    return level_map

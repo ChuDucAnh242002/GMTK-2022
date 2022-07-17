@@ -11,13 +11,13 @@ class Engine():
         self.WINDOWN_SIZE = WINDOWN['SIZE']
         self.SCALE = WINDOWN['SCALE']
 
-        db.database(WINDOWN['FPS'], IMG['FPS'])
+        db.database(WINDOWN['FPS'], IMG)
         db.CHUNK_SIZE = MAP['CHUNK_SIZE']
         
         self.FPS = db.FPS
 
 
-        self.map = map(MAP['TOTAL_LEVEL'])
+        self.map = map()
         self.player = None
 
         self.screen = pygame.display.set_mode(WINDOWN['SIZE'])
@@ -55,7 +55,7 @@ class Engine():
         db.object_camera = []
         db.entity_camera = []
 
-    def render(self):
+    def render(self, COLOR):
         self.map.render(self.display, self.camera)
         self.entity_render(self.display, self.camera)
         self.object_render(self.display, self.camera)
@@ -70,6 +70,12 @@ class Engine():
             for direc in direction:
                 rect = self.player.get_nearby_rect(direc)
                 pygame.draw.rect(self.display, GREEN, [rect.x - self.camera.scroll[0], rect.y - self.camera.scroll[1], rect.width, rect.height], 1)
+            
+            for object in db.object_camera:
+                pygame.draw.rect(self.display, GREEN, [object.rect.x - self.camera.scroll[0], object.rect.y - self.camera.scroll[1], object.rect.width, object.rect.height], 1)
+            for entity in db.entity_camera:
+                pygame.draw.rect(self.display, GREEN, [entity.rect.x - self.camera.scroll[0], entity.rect.y - self.camera.scroll[1], entity.rect.width, entity.rect.height], 1)
+
 
 
         surf = pygame.transform.scale(self.display, self.WINDOWN_SIZE)
@@ -83,7 +89,7 @@ class Engine():
         db.multiply_factor = db.delta_time * db.FPS
         self.multiply_factor = db.multiply_factor
         
-        self.display.fill([0, 0, 0])
+        self.display.fill(COLOR)
         self.clean()
         self.update()
 

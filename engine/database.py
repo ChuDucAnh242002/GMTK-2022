@@ -50,14 +50,15 @@ class database():
     global img_database, animation_database, obj_database
     global tile_rects, entities, objects
 
-    def __init__(self, input_FPS, input_img_FPS):
-        global FPS, img_FPS
+    def __init__(self, input_FPS, IMG):
+        global FPS, img_FPS, IMG_SIZE
 
         # { ID: [img_loaded, img_name, type] } type can be obj, tile, entity
-        img_FPS = input_img_FPS
+        img_FPS = IMG['FPS']
         FPS = input_FPS//img_FPS * img_FPS
         
         self.tiles_path = 'data/tiles'
+        IMG_SIZE = IMG['SIZE']
         self.tile_size = [IMG_SIZE, IMG_SIZE]
         self.create_tiles_and_fore_database()
 

@@ -10,10 +10,9 @@ from engine.core_funcs import *
 from mechanic.player import player
 
 class map():
-    def __init__(self, total_level):
+    def __init__(self):
 
         # ID: [img_loaded, img_name, type] type can be obj, tile, entity
-        self.total_level = total_level
         self.game_map = {
             'tile': {}, # {'0;0': [[[pos_x, pos_y], ID] * n]}
             'foreground': {}, # {'0;0': [[[pos_x, pos_y], ID] * n]}
@@ -31,40 +30,46 @@ class map():
         self.ALL_LAYER.extend(self.ENTITY_LAYER)
 
     def load_map(self, level):
-        json_map = load_dict_json(self.domain, self.total_level, self.ALL_LAYER)
+        json_map = load_dict_json(self.domain, level, self.ALL_LAYER)
 
-        self.game_map[level] = {'tile': {}, 
+        self.game_map = {'tile': {}, 
             'foreground': [],
             'object': [],
             'entity': []
             }
-        tiles, foreground = self.load_tile(level, json_map)
-        entities, objects = self.load_entity(level, json_map)
+        tiles, foreground = self.load_tile(json_map)
+        entities, objects = self.load_entity(json_map)
         self.game_map["tile"] = tiles
         self.game_map["foreground"] = foreground
         self.game_map["entity"] = entities
         self.game_map["object"] = objects
 
 
-    def load_tile(self, level, json_map):
+    def load_tile(self, json_map):
         tiles = {}
         foreground = {}
-        data2D_tile = json_map[level]["tile_layer_0"]
-        data2D_fore = json_map[level]["tile_layer_1"]
+        data2D_tile = json_map["tile_layer_0"]
+        data2D_fore = json_map["tile_layer_1"]
+
         for y in range(len(data2D_tile)):
             for x in range(len(data2D_tile[0])):
                 loc = [x * db.IMG_SIZE, y *db.IMG_SIZE]
                 pos_chunk = str(int(x // db.CHUNK_SIZE)) + ';' + str(int(y // db.CHUNK_SIZE))
                 id_tile = data2D_tile[y][x]
-                id_fore = data2D_fore[y][x]
                 data_tile = [loc, id_tile]
-                data_fore = [loc, id_fore]
 
                 if id_tile != -1:
                     if pos_chunk not in tiles:
                         tiles[pos_chunk] = [data_tile]
                     elif data_tile not in tiles[pos_chunk]:
                         tiles[pos_chunk].append(data_tile)
+     
+        for y in range(len(data2D_fore)):
+            for x in range(len(data2D_fore[0])):
+                loc = [x * db.IMG_SIZE, y *db.IMG_SIZE]
+                pos_chunk = str(int(x // db.CHUNK_SIZE)) + ';' + str(int(y // db.CHUNK_SIZE))
+                id_fore = data2D_fore[y][x]
+                data_fore = [loc, id_fore]
 
                 if id_fore != -1:
                     if pos_chunk not in foreground:
@@ -74,20 +79,31 @@ class map():
 
         return tiles, foreground
 
-    def load_entity(self, level, json_map):
+    def load_entity(self, json_map):
         entities = []
         objects = []
         if "entity_layer_0" in self.ENTITY_LAYER:
-            for entity in json_map[level]["entity_layer_0"]:
-                x = entity['x'] - entity['originX']
-                y = entity['y'] - entity['originY']
+            for entity in json_map["entity_layer_0"]:
+                try:
+                    x = entity['x'] - entity['originX']
+                    y = entity['y'] - entity['originY']
+                except:
+                    x = entity['x']
+                    y = entity['y']
+
                 name = entity['name']
                 # id = entity['id']
+                print(name, x, y)
                 entities.append([[x, y], name])
         if "entity_layer_1" in self.ENTITY_LAYER:
-            for entity in json_map[level]["entity_layer_1"]:
-                x = entity['x'] - entity['originX']
-                y = entity['y'] - entity['originY']
+            for entity in json_map["entity_layer_1"]:
+                try:
+                    x = entity['x'] - entity['originX']
+                    y = entity['y'] - entity['originY']
+                except:
+                    x = entity['x']
+                    y = entity['y']
+
                 name = entity['name']
                 # id = entity['id']
                 objects.append([[x, y], name])

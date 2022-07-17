@@ -86,14 +86,15 @@ class animation():
                 self.change_status(self.status)
                 frame_path = db.animation_database[str(ID)][self.frame]
                 frame_img = pygame.image.load(frame_path).convert()
-                frame_img.set_colorkey([0, 0, 0])
+                frame_img.set_colorkey(COLORKEY)
                 self.rect = pygame.Rect(self.pos[0], self.pos[1], frame_img.get_width(), frame_img.get_height())
                 if draw:
                     surface.blit(pygame.transform.flip(frame_img, self.flip, False), pos)
             elif self.ID + '.png' in obj_list:
                 self.frame = 0
                 ID = self.ID
-                obj_img = pygame.image.load(self.obj_path + '/' + ID + '.png')
+                obj_img = pygame.image.load(self.obj_path + '/' + ID + '.png').convert()
+                obj_img.set_colorkey(COLORKEY)
                 self.rect = pygame.Rect(self.pos[0], self.pos[1], obj_img.get_width(), obj_img.get_height())
                 if draw:
                     surface.blit(obj_img, pos)
@@ -128,8 +129,11 @@ class animation():
 
         obj_list = os.listdir(self.obj_path)
         if self.ID + '.png' in obj_list:
+
             frame_path = db.obj_database[self.ID]
             frame_img = pygame.image.load(frame_path).convert()
+            frame_img.set_colorkey(COLORKEY)
+
             return pygame.Rect(self.pos[0], self.pos[1], frame_img.get_width(), frame_img.get_height())
         else:
             try:
@@ -144,4 +148,5 @@ class animation():
 
             frame_path = db.animation_database[ID][0]
             frame_img = pygame.image.load(frame_path).convert()
+            frame_img.set_colorkey(COLORKEY)
             return pygame.Rect(self.pos[0], self.pos[1], frame_img.get_width(), frame_img.get_height())

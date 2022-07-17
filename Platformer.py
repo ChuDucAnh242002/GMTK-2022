@@ -3,6 +3,7 @@ import pygame
 import sys
 from pygame.locals import *
 from Engine import Engine
+from engine.core_funcs import BLACK, WHITE
 import engine.database as db
 
 # Setting enviromental ------------------------------------------------------------------------------------------------------------------ #
@@ -13,7 +14,7 @@ clock = pygame.time.Clock()
 
 WINDOWN = {
     'SIZE': [1080, 720],
-    'SCALE': 3,
+    'SCALE': 0.5,
     'FPS': 60
 }
 
@@ -24,7 +25,6 @@ IMG = {
 
 MAP = {
     'CHUNK_SIZE': 8,
-    'TOTAL_LEVEL': 2
 }
 
 pygame.display.set_caption("BoBoiGirl")
@@ -48,16 +48,15 @@ while True:
     
     e.render_english("TEST", [464, 464], 'large')
 
-    print(gravity)
-    player.move([0, gravity])
-    #print(player.collision)
+    # player.move([0, gravity])
+    # #print(player.collision)
     
-    gravity += 0.1
-    if gravity > 3:
-        gravity = 3
+    # gravity += 0.1
+    # if gravity > 3:
+    #     gravity = 3
 
-    if player.collision['bottom']:
-        gravity = 0
+    # if player.collision['bottom']:
+    #     gravity = 0
 
     #print(player.collision['bottom'])
     
@@ -78,8 +77,10 @@ while True:
         player.move([2, 0])
     if key_pressed[K_DOWN]:
         player.move([0, 2])
+    if key_pressed[K_UP]:
+        player.move([0, -2])
 
         
-    e.render()
+    e.render(BLACK)
     clock.tick(60)
     pygame.display.update()
