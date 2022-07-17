@@ -64,7 +64,7 @@ class player(entity):
     def update_effect(self):
         self.list_effects.append('none')
 
-        directions = ['up', 'down', 'left', 'right', 'surround']
+        directions = ['surround']
 
         for direc in directions:
             for element in self.near_by[direc]:

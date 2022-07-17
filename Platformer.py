@@ -73,7 +73,7 @@ step_time = 0
 
 steam = pygame.mixer.Sound('data/music/Steam.wav')
 steam.set_volume(0.3)
-steam.play()
+steam_play = False
 
 die = pygame.mixer.Sound('data/music/Rock Fall.wav')
 die.set_volume(0.7)
@@ -107,6 +107,13 @@ while True:
                 continue
 
     obj_ID = []
+
+    if player.pos == player.spawn_pos and player.status == 'die':
+        if player.hold_element == None:
+            player.change_status('normal')
+        else:
+            player.change_status(player.hold_element.ID[:len(player.hold_element.ID) - len('_element')])
+
     for obj in player.near_by['surround']:
         if obj != 'tile':
             obj_ID.append(obj.ID)
@@ -121,8 +128,36 @@ while True:
         fire.stop()
         fire_play = False
 
-    if 'blow' in player.list_effects:
-        blow.play()
+    for data in player.list_effects:
+        effect = data[1]
+        obstacle = data[0]
+
+        if 'blow' in effect:
+            print("TRUE")
+            blow.play()
+
+        if 'float' in effect:
+            if swimming_play == False:
+                swimming.play(-1)
+                swimming_play = True
+        else:
+            swimming.stop()
+            swimming_play = False
+
+        if 'water' in obj_ID and 'float' not in effect:
+            if underwater_play == False:
+                underwater.play()
+                underwater_play = True
+        else:
+            underwater_play = False
+            underwater.stop()
+
+        if 'die' in effect:
+            if player.hold_element != None and obstacle.ID != 'wind':
+                if 'fire' in player.hold_element.ID or 'water' in player.hold_element.ID:
+                    if steam_play == False:
+                        steam.play()
+                        steam_play = True
 
     if player.status == 'die' and player.frame < 10:
         if die_play == False:
@@ -130,29 +165,9 @@ while True:
             die_play = True
     if player.pos == player.spawn_pos:
         die_play = False
+        steam_play = False
 
-    if 'float' in player.list_effects:
-        if swimming_play == False:
-            swimming.play(-1)
-            swimming_play = True
-    else:
-        swimming.stop()
-        swimming_play = False
-
-    if 'water' in obj_ID and 'float' not in player.list_effects:
-        if underwater_play == False:
-            underwater.play()
-            underwater_play = True
-    else:
-        underwater_play = False
-        underwater.stop()
-
-    if 'die' in player.list_effects and player.status == 'die':
-        if player.hold_element != 'None':
-            if player.hold_element.ID == 'fire' and 'water' in obj_ID:
-                steam.play()
-            elif player.hold_element.ID == 'water' and 'fire' in obj_ID:
-                steam.play()
+    
 
     e.render_english(str(round(clock.get_fps(), 2)), [e.camera.x, e.camera.y], 'small')
     e.render_english("Elements: " + str(len(player.dice.inventory)), [e.camera.x, e.camera.y + 8], 'small')
@@ -215,19 +230,15 @@ while True:
                 effect = data[1]
                 if effect == 'float':
                     gravity = -2.5
-                    player.change_status('jump')
-                    jump_choice = random.choice(jump)
-                    jump_choice.set_volume(0.5)
-                    jump_choice.play()
-                if player.hold_element != None:
-                    if 'wind' in player.hold_element.ID:
-                        gravity = -3.5
-                    elif 'stone' in player.hold_element.ID:
-                        gravity = -2
-                    player.change_status('jump')
-                    jump_choice = random.choice(jump)
-                    jump_choice.set_volume(0.5)
-                    jump_choice.play()
+                    if player.hold_element != None:
+                        if 'wind' in player.hold_element.ID:
+                            gravity = -3.5
+                        elif 'stone' in player.hold_element.ID:
+                            gravity = -2
+                        player.change_status('jump')
+                        jump_choice = random.choice(jump)
+                        jump_choice.set_volume(0.5)
+                        jump_choice.play()
 
         elif key_pressed[K_LEFT]:
             player.move([-3, 0])
