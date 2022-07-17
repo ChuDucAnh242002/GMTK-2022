@@ -1,7 +1,8 @@
 from tkinter import N
 import engine.database as db
 import random
-from engine.entity import entity
+import pygame
+from engine.core_funcs import *
 
 class dice:
     def __init__(self, pos):
@@ -27,18 +28,24 @@ class dice:
         if not self.roll:
             return
 
-        if (self.time_per_frame <= 0):
-            self.time_per_frame = self.roll_time / self.speed_roll
-            self.index += 1
-            if self.index >= len(self.inventory):
-                self.index = 0
+        scroll = camera.scroll
+        pos = [self.pos[0] - scroll[0], self.pos[1] - scroll[1]]
 
-        element = self.inventory[self.index]
-        element.pos = self.pos
-        element.render(display, camera)
+        if self.index >= len(db.animation_database['dice_roll']):
+            self.index = 0
+        
+        ID = 'dice_roll'
+        frame_path = db.animation_database[str(ID)][self.index]
+        frame_img = pygame.image.load(frame_path).convert()
+        frame_img.set_colorkey(COLORKEY)
+        self.rect = pygame.Rect(self.pos[0], self.pos[1], frame_img.get_width(), frame_img.get_height())
+        display.blit(pygame.transform.flip(frame_img, False, False), pos)
 
         self.time_per_frame -= db.delta_time
         self.time -= db.delta_time
+
+        self.index += 2
+
 
     def add_element(self, object):
         self.inventory.append(object)
