@@ -50,10 +50,10 @@ while True:
     e.render_english("TEST", [464, 464], 'large')
 
     player.move([0, gravity])
-    
+
     gravity += 0.1
-    if gravity > 3:
-        gravity = 3
+    if gravity > 10:
+        gravity = 10
 
     if player.collision['bottom'] or player.collision['top']:
         gravity = 0
@@ -71,7 +71,9 @@ while True:
 
                 if player.hold_element != None:
                     if 'wind' in player.hold_element.ID:
-                        gravity = -8
+                        gravity = -6
+                    elif 'stone' in player.hold_element.ID:
+                        gravity = -3
 
     key_pressed = pygame.key.get_pressed()
     if key_pressed[K_LEFT]:

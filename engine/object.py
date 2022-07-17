@@ -24,7 +24,7 @@ class object(animation):
         self.spawn_pos = [0, 0]
 
     def set_spawn(self, pos):
-        self.spawn_pos = pos
+        self.spawn_pos = pos.copy()
 
     def render(self, surface, camera, draw=True) -> None:
         super().render(surface, camera, draw)

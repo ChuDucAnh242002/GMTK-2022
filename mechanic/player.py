@@ -89,7 +89,7 @@ class player(entity):
             obstacle = data[0]
 
             if effect == 'die':
-                self.rect.x, self.rect.y = self.spawn_pos
+                self.rect.x, self.rect.y = self.spawn_pos.copy()
                 return
 
             if effect == 'none':
@@ -99,7 +99,7 @@ class player(entity):
                 if self.effect.time > 0:
                     self.effect.time -= db.delta_time
                     if self.effect.time <= 0:
-                        self.rect.x, self.rect.y = self.spawn_pos
+                        self.rect.x, self.rect.y = self.spawn_pos.copy()
                         self.list_effects = []
                         self.effect.time = 0
                 else:

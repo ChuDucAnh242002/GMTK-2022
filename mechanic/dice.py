@@ -10,7 +10,7 @@ class dice:
         
         self.roll = False
         self.roll_time = 2 + random.randint(0, 10)/10
-        self.speed_roll = 10
+        self.speed_roll = random.randint(10, 20)
 
         self.time = 0
         self.time_per_frame = self.roll_time / self.speed_roll
@@ -57,6 +57,9 @@ class dice:
         if self.roll and self.time <= 0:
             self.roll = False
             
+            if self.index >= len(self.inventory):
+                self.index = 0
+
             self.rolled_element = self.inventory[self.index]
             self.remove_element(self.rolled_element)
         
