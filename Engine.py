@@ -33,6 +33,7 @@ class Engine():
 
         # [[text, pos, path, color, language] * n]
         self.text = []
+        self.level = 1
 
     def load_map(self, level):
         self.player = None
@@ -88,9 +89,6 @@ class Engine():
                  pygame.draw.rect(self.display, YELLOW, [rect.x - self.camera.scroll[0], rect.y - self.camera.scroll[1], rect.width, rect.height], 1)
 
 
-        surf = pygame.transform.scale(self.display, self.WINDOWN_SIZE)
-        self.screen.blit(surf, [0, 0])
-
         self.now_time = time.time()
         db.delta_time = self.now_time - self.prev_time
         self.delta_time = db.delta_time
@@ -99,6 +97,29 @@ class Engine():
         db.multiply_factor = db.delta_time * db.FPS
         self.multiply_factor = db.multiply_factor
         
+        surf = pygame.transform.scale(self.display, self.WINDOWN_SIZE)
+
+        self.screen.blit(surf, [0, 0])
+        
+        if self.level == 9:
+            font = pygame.font.SysFont("Comic Sans MS", 60)
+            surf_1 = font.render("Thank you for playing BoBoiGirl", True, BLACK)
+            self.screen.blit(surf_1, [115, 110])            
+        elif self.level == 1:
+            font = pygame.font.SysFont("Comic Sans MS", 30)
+            surf_1 = font.render("W, A, D to move", True, BLACK)
+            self.screen.blit(surf_1, [80, 20])
+            
+            surf_1 = font.render("Q to reload map", True, BLACK)
+            self.screen.blit(surf_1, [80, 50])
+            
+            surf_1 = font.render("R to roll", True, BLACK)
+            self.screen.blit(surf_1, [80, 80])
+
+            surf_1 = font.render("Enegry ball + element = roll", True, BLACK)
+            self.screen.blit(surf_1, [80, 110])            
+            
+
         self.display.fill(COLOR)
         self.clean()
         self.update()
