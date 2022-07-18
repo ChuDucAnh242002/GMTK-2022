@@ -15,7 +15,11 @@
       "gridCellsX": 222,
       "gridCellsY": 105,
       "entities": [
+<<<<<<< HEAD
         {"name": "player", "id": 0, "_eid": "94680617", "x": 40, "y": 432, "originX": 0, "originY": -7}
+=======
+        {"name": "player", "id": 0, "_eid": "94680617", "x": 48, "y": 432, "originX": 0, "originY": -7}
+>>>>>>> origin/Engine
       ]
     },
     {

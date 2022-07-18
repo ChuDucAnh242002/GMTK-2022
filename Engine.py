@@ -4,18 +4,21 @@ import engine.database as db
 from engine.map import map
 from engine.camera import camera
 from engine.core_funcs import *
+from engine.text import Font
+
 class Engine():
     def __init__(self, WINDOWN, IMG, MAP):
         self.WINDOWN_SIZE = WINDOWN['SIZE']
         self.SCALE = WINDOWN['SCALE']
+        db.WINDOWN_SIZE = self.WINDOWN_SIZE
 
-        db.database(WINDOWN['FPS'], IMG['FPS'])
+        db.database(WINDOWN['FPS'], IMG)
         db.CHUNK_SIZE = MAP['CHUNK_SIZE']
         
         self.FPS = db.FPS
 
 
-        self.map = map(MAP['TOTAL_LEVEL'])
+        self.map = map()
         self.player = None
 
         self.screen = pygame.display.set_mode(WINDOWN['SIZE'])
@@ -28,22 +31,43 @@ class Engine():
         self.multiply_factor = 0
         self.DEBUG = []
 
+        # [[text, pos, path, color, language] * n]
+        self.text = []
+        self.level = 1
+
     def load_map(self, level):
+        self.player = None
+        self.map = map()
+        db.entities = []
+        db.objects = []
+
         self.map.load_map(level)
+        self.update()
+        return self.player
 
     def update(self):
         db.DEBUG = self.DEBUG
         self.player = self.map.update(self.camera)
         self.camera.update(self.player, self.display)
 
-    def render(self):
-        self.update()
+    def clean(self):
+        self.text = []
 
-        self.display.fill([0, 0, 0])
+        db.tile_ID = []
+        db.tile_rects = []
 
+        db.fore_ID = []
+        db.fore_rects = []
+
+        
+
+    def render(self, COLOR):
+        db.object_camera = []
+        db.entity_camera = []
         self.map.render(self.display, self.camera)
         self.entity_render(self.display, self.camera)
         self.object_render(self.display, self.camera)
+        self.font_render()
         self.player.render(self.display, self.camera)
 
         if 'show_hitbox' in self.DEBUG:
@@ -54,10 +78,16 @@ class Engine():
             for direc in direction:
                 rect = self.player.get_nearby_rect(direc)
                 pygame.draw.rect(self.display, GREEN, [rect.x - self.camera.scroll[0], rect.y - self.camera.scroll[1], rect.width, rect.height], 1)
+            
+            for object in db.object_camera:
+                pygame.draw.rect(self.display, GREEN, [object.rect.x - self.camera.scroll[0], object.rect.y - self.camera.scroll[1], object.rect.width, object.rect.height], 1)
+            for entity in db.entity_camera:
+                pygame.draw.rect(self.display, GREEN, [entity.rect.x - self.camera.scroll[0], entity.rect.y - self.camera.scroll[1], entity.rect.width, entity.rect.height], 1)
 
+        if 'show_hitbox_tile' in self.DEBUG:
+            for rect in db.tile_rects:
+                 pygame.draw.rect(self.display, YELLOW, [rect.x - self.camera.scroll[0], rect.y - self.camera.scroll[1], rect.width, rect.height], 1)
 
-        surf = pygame.transform.scale(self.display, self.WINDOWN_SIZE)
-        self.screen.blit(surf, [0, 0])
 
         self.now_time = time.time()
         db.delta_time = self.now_time - self.prev_time
@@ -66,19 +96,68 @@ class Engine():
 
         db.multiply_factor = db.delta_time * db.FPS
         self.multiply_factor = db.multiply_factor
+        
+        surf = pygame.transform.scale(self.display, self.WINDOWN_SIZE)
+
+        self.screen.blit(surf, [0, 0])
+        
+        if self.level == 9:
+            font = pygame.font.SysFont("Comic Sans MS", 60)
+            surf_1 = font.render("Thank you for playing BoBoiGirl", True, BLACK)
+            self.screen.blit(surf_1, [115, 110])            
+        elif self.level == 1:
+            font = pygame.font.SysFont("Comic Sans MS", 30)
+            surf_1 = font.render("W, A, D to move", True, BLACK)
+            self.screen.blit(surf_1, [80, 20])
+            
+            surf_1 = font.render("Q to reload map", True, BLACK)
+            self.screen.blit(surf_1, [80, 50])
+            
+            surf_1 = font.render("R to roll", True, BLACK)
+            self.screen.blit(surf_1, [80, 80])
+
+            surf_1 = font.render("Enegry ball + element = roll", True, BLACK)
+            self.screen.blit(surf_1, [80, 110])            
+            
+
+        self.display.fill(COLOR)
+        self.clean()
+        self.update()
 
     def object_render(self, surface, camera):
-        db.object_camera = []
-
         for object in db.objects:
             if object.rect.colliderect(camera.rect):
                 object.render(surface, camera)
                 db.object_camera.append(object)
 
     def entity_render(self, surface, camera):
-        db.entity_camera = []
-
         for entity in db.entities:
             if entity.rect.colliderect(camera.rect):
                 entity.render(surface, camera)
                 db.entity_camera.append(entity)
+
+    def font_render(self):
+        for data in self.text:
+            text = data[0]
+            pos = data[1]
+            path = data[2]
+            color = data[3]
+            lang = data[4]
+
+            font = Font(path, color)
+            if lang == 'english':
+                font.render_english(text, self.display, pos)
+            elif lang == 'viet':
+                font.render_viet(text, self.display, pos)
+
+    def render_english(self, text, pos, size = 'small', color = WHITE):
+        
+        path = 'data/font/' + size + '_font.png'
+        pos = [pos[0] - self.camera.scroll[0], pos[1] - self.camera.scroll[1]]
+        self.text.append([text, pos, path, color, 'english'])
+    
+    def render_viet(self, text, pos, size = 'small', color = WHITE):
+        
+        path = 'data/font/' + size + '_font.png'
+        pos = [pos[0] - self.camera.scroll[0], pos[1] - self.camera.scroll[1]]
+        self.text.append([text, pos, path, color, 'viet'])

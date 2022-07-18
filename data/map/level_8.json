@@ -15,7 +15,11 @@
       "gridCellsX": 120,
       "gridCellsY": 69,
       "entities": [
+<<<<<<< HEAD
         {"name": "player", "id": 0, "_eid": "94680617", "x": 24, "y": 328, "originX": 0, "originY": -7}
+=======
+        {"name": "player", "id": 0, "_eid": "94680617", "x": 312, "y": 320, "originX": 0, "originY": -7}
+>>>>>>> origin/Engine
       ]
     },
     {
@@ -34,10 +38,17 @@
         {"name": "energy_ball", "id": 5, "_eid": "94923314", "x": 296, "y": 408, "originX": 0, "originY": -9},
         {"name": "water_element", "id": 6, "_eid": "94749990", "x": 336, "y": 408},
         {"name": "fire_element", "id": 7, "_eid": "94768206", "x": 368, "y": 408, "originX": 0, "originY": -10},
+<<<<<<< HEAD
         {"name": "fire", "id": 8, "_eid": "94814723", "x": 416, "y": 400, "originX": 0, "originY": -2},
         {"name": "energy_ball", "id": 9, "_eid": "94923314", "x": 464, "y": 328, "originX": 0, "originY": -9},
         {"name": "rock_element", "id": 10, "_eid": "94764214", "x": 592, "y": 488, "originX": 0, "originY": -11},
         {"name": "wind", "id": 11, "_eid": "94818797", "x": 752, "y": 272, "originX": 0, "originY": 0},
+=======
+        {"name": "fire", "id": 8, "_eid": "94814723", "x": 416, "y": 408, "originX": 0, "originY": -2},
+        {"name": "energy_ball", "id": 9, "_eid": "94923314", "x": 464, "y": 328, "originX": 0, "originY": -9},
+        {"name": "rock_element", "id": 10, "_eid": "94764214", "x": 592, "y": 488, "originX": 0, "originY": -11},
+        {"name": "wind", "id": 11, "_eid": "94818797", "x": 552, "y": 176, "originX": 0, "originY": 0},
+>>>>>>> origin/Engine
         {"name": "gate", "id": 12, "_eid": "95204758", "x": 872, "y": 328, "originX": 0, "originY": 0},
         {"name": "wind_element", "id": 13, "_eid": "94753656", "x": 696, "y": 352, "originX": 0, "originY": -8}
       ]
